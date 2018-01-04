@@ -1,0 +1,24 @@
+{
+  "name": "conn_giga",
+  "version": "0.0.1",
+  "description": "conexion con bd oracle giga",
+  "main": "tdcVivos.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start tdcVivos.js -i max",
+    "dev": "node tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192"
+  },
+  "keywords": [
+    "oracle",
+    "nodejs"
+  ],
+  "author": "fmbv",
+  "license": "MIT",
+  "dependencies": {
+    "exceljs": "^0.8.1",
+    "express": "^4.16.2",
+    "json2xls": "^0.1.2",
+    "nodemon": "^1.12.4",
+    "oracledb": "^1.13.1"
+  }
+}
