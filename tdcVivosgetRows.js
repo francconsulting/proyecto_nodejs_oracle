@@ -99,7 +99,7 @@ var tdcs = (err, conn) => {
   ssql += " and rownum <= 201 ";
   //   ssql +=" and tdc.distribuidora = 'CZZ' ";
   //ssql = "select * FROM GIGA_OWNER.t_gg_F_tdc TDC where rownum < 5 "
-  conn.execute(ssql, [], { resultSet: true }, (err, results) => {
+  /* conn.execute(ssql, [], { resultSet: true }, (err, results) => {
     if (err) {
       console.error(err.message);
       rsClose(conn, results);
@@ -109,6 +109,17 @@ var tdcs = (err, conn) => {
     console.log("   Ejecutando la consulta");
     getCabecera(conn, results);
     getFilas(conn, results, numRows);
+  });*/
+
+  //ConnBd.ejecutarSql(conn, ssql);
+  var con = new Promise((success, reject) => {
+    var c = ConnBd.ejecutarSql(conn, ssql);
+
+    success(c);
+  });
+
+  con.then(c => {
+    console.log("ssss", c);
   });
 };
 
