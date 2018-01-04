@@ -187,28 +187,6 @@ function getFilas(conn, results, numRows) {
   });
 }
 
-//function rsClose(conn, results) {
-var rsClose = (conn, results) => {
-  results.resultSet.close(err => {
-    if (err) {
-      console.log("Error al cerrar el recordSet");
-    }
-    console.log("recordset Cerrado");
-  });
-};
-
-//function connClose(conn) {
-var connClose = conn => {
-  setTimeout(() => {
-    conn.close(err => {
-      if (err) {
-        console.log("Error al cerrar la Conexionn");
-      }
-      console.log("conexion Cerrada");
-    });
-  }, 1000); //retrasar el cierre de la conexion 1seg
-};
-
 //conectar(tdcs);
 
 ConnBd.open(tdcs);
