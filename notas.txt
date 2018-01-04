@@ -1,0 +1,31 @@
+var oracledb = require('oracledb');
+oracledb.outFormat = oracledb.ARRAY;    =>>mas eficiente
+oracledb.poolMax = 4;
+oracledb.poolPingInterval = 60;     // seconds para comprobar las conexiones
+oracledb.poolTimeout = 60;  //cesar las conexiones inactivas
+oracledb.queueRequests = false;   //cuando hay mas conexiones abierta devuelve un error ORA-24418
+oracledb.queueTimeout = 3000; // 3 seconds tiempo de espera de las solicitudes en cola. despues de esto finalizan
+
+9.1.4 Query Output Formats
+
+
+Cuando el número de filas de consulta es relativamente 
+grande o no se puede predecir, se recomienda utilizar 
+un ResultSet. Esto evita que los resultados de la
+ consulta sean truncados inesperadamente por el límite 
+ de maxRows y elimina la necesidad de sobredimensionar 
+ maxRows para evitar tal truncamiento
+
+ Usar resulset que tiene toQueryStream
+
+
+
+
+ //  if (iRowsAffec%stopRowEach == 0){
+                  //  setTimeout(()=>{
+                      //  xls = json2xls(rows)
+                       // fs.writeFile('dataGetRows.xlsx',xls, 'binary')
+                       console.log('Registros recuperados:', iRowsAffec)
+                       //  }, timePause)
+                         
+                   //  }
