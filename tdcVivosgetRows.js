@@ -12,22 +12,23 @@
  *
  */
 
-var oracledb = require("oracledb"),
-  dbConfig = require("./dbconfig.js"),
-  connBd = require("./connBd.js"),
+var //oracledb = require("oracledb"),
+  //dbConfig = require("./dbconfig.js"),
+  ConnBd = require("./connBd.js"),
   fs = require("fs"),
-  ExcelFile = require("./excelFile");
-(reloj = require("./reloj")),
-  (numRows = 100), //bloque de registros a recibir
-  (iRowsAffec = 0),
-  (stopRowEach = 20), //numero de registros
-  (timePause = 3000); //milisegundos
-(arrayHeader = []), (arrayData = []);
+  ExcelFile = require("./excelFile"),
+  reloj = require("./reloj"),
+  numRows = 100, //bloque de registros a recibir
+  iRowsAffec = 0,
+  stopRowEach = 20, //numero de registros
+  timePause = 3000, //milisegundos
+  arrayHeader = [],
+  arrayData = [];
 
-oracledb.outFormat = oracledb.ARRAY;
+/*oracledb.outFormat = oracledb.ARRAY;
 oracledb.poolMax = 4;
 oracledb.poolPingInterval = 60;
-oracledb.fetchArraySize = 100;
+oracledb.fetchArraySize = 100;*/
 
 /*var conectar = function(cb) {
   oracledb.getConnection(
@@ -102,7 +103,7 @@ var tdcs = (err, conn) => {
     if (err) {
       console.error(err.message);
       rsClose(conn, results);
-      connBd.close(conn);
+      ConnBd.close(conn);
       return;
     }
     console.log("   Ejecutando la consulta");
@@ -134,8 +135,9 @@ function getFilas(conn, results, numRows) {
     if (err) {
       //si se produce un error
       console.error(err.message);
-      rsClose(conn, results); //cerrar el recordset
-      connBd.close(conn); //cerrar la conexion
+      ConnBd.closeRs(conn, results);
+      // rsClose(conn, results); //cerrar el recordset
+      ConnBd.close(conn); //cerrar la conexion
       reloj.timeStop(); //parar el reloj
       return;
     } else if (rows.length > 0 || iRowsAffec > 0) {
@@ -155,8 +157,8 @@ function getFilas(conn, results, numRows) {
       } else {
         //cuando finaliza la recuperacion de datos
         console.log("   Registros recuperados_1:", iRowsAffec);
-        rsClose(conn, results);
-        connBd.close(conn);
+        ConnBd.closeRs(conn, results);
+        ConnBd.close(conn);
         //TODO:   hacerlo como un metodo independiente donde se le pase Tipo, Nombre Fichero, nombre Hoja, y Array de datos
         ExcelFile.crearLibro("stream", "prueba.xlsx");
         ExcelFile.crearHoja("miHoja");
@@ -179,8 +181,8 @@ function getFilas(conn, results, numRows) {
       //cuando no hay datos en la consulta
       console.log("<<<< No hay datos para la consulta planteada >>>>");
       reloj.timeStop();
-      rsClose(conn, results);
-      connBd.close(conn);
+      ConnBd.closeRs(conn, results);
+      ConnBd.close(conn);
     }
   });
 }
@@ -209,4 +211,4 @@ var connClose = conn => {
 
 //conectar(tdcs);
 
-connBd.open(tdcs);
+ConnBd.open(tdcs);

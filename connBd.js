@@ -2,9 +2,14 @@
 
 var oracledb = require("oracledb"),
   dbConfig = require("./dbconfig.js"),
-  connBd = () => {};
+  ConnBd = () => {};
 
-connBd.open = cb => {
+oracledb.outFormat = oracledb.ARRAY;
+oracledb.poolMax = 4;
+oracledb.poolPingInterval = 60;
+oracledb.fetchArraySize = 100;
+
+ConnBd.open = cb => {
   return oracledb.getConnection(
     {
       user: dbConfig.user,
@@ -16,7 +21,7 @@ connBd.open = cb => {
   );
 };
 
-connBd.close = conn => {
+ConnBd.close = conn => {
   setTimeout(() => {
     conn.close(err => {
       if (err) {
@@ -27,4 +32,13 @@ connBd.close = conn => {
   }, 1000); //retrasar el cierre de la conexion 1seg
 };
 
-module.exports = connBd;
+ConnBd.closeRs = (conn, results) => {
+  results.resultSet.close(err => {
+    if (err) {
+      console.log("Error al cerrar el recordSet");
+    }
+    console.log("recordset Cerrado");
+  });
+};
+
+module.exports = ConnBd;
