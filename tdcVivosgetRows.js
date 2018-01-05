@@ -96,7 +96,7 @@ var tdcs = (err, conn) => {
   ssql += " WHERE ";
   ssql += " TDC.TESTTDC NOT IN (6,7,10)  ";
   ssql += " AND TDC.CLINNEG = 1 ";
-  ssql += " and rownum <= 201 ";
+  ssql += " and rownum <= 2 ";
   //   ssql +=" and tdc.distribuidora = 'CZZ' ";
   //ssql = "select * FROM GIGA_OWNER.t_gg_F_tdc TDC where rownum < 5 "
   /* conn.execute(ssql, [], { resultSet: true }, (err, results) => {
@@ -112,15 +112,35 @@ var tdcs = (err, conn) => {
   });*/
 
   //ConnBd.ejecutarSql(conn, ssql);
-  var con = new Promise((success, reject) => {
-    var c = ConnBd.ejecutarSql(conn, ssql);
+  ConnBd.sqlPromise(conn, ssql)
+    .then(rs => {
+      //var rs = results;
+      ConnBd.getCabecera(conn, rs).then(results => {
+        console.log("cebecera: ", results);
+      });
 
-    success(c);
-  });
+      return rs;
+    })
+    .then(rs => {
+      ConnBd.getFilas(conn, rs, 250).then(results => {
+        console.log("filas: ", results);
+      });
+    })
+    .then(() => {
+      console.log("------------------fin----------------------");
+    });
 
-  con.then(c => {
-    console.log("ssss", c);
-  });
+  /*var c = () => {
+    return new Promise((success, reject) => {
+      let x = ConnBd.ejecutarSql(conn, ssql);
+      console.log(x);
+      success(x);
+    });
+  };
+
+  c().then(rs => {
+    console.log("aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", rs);
+  });*/
 };
 
 //PASAR ESTE METODO A EL ARCHIVO EXCEL

@@ -22,6 +22,10 @@ ConnBd.setRows = filas => {
   numRows = filas;
 };
 
+/**
+ * Apertura de la conexion a la BD
+ * @param {function} cb callback
+ */
 ConnBd.open = cb => {
   return oracledb.getConnection(
     {
@@ -34,6 +38,10 @@ ConnBd.open = cb => {
   );
 };
 
+/**
+ * Cerrar la conxion a la BD
+ * @param {Object} conn
+ */
 ConnBd.close = conn => {
   setTimeout(() => {
     conn.close(err => {
@@ -45,6 +53,11 @@ ConnBd.close = conn => {
   }, 1000); //retrasar el cierre de la conexion 1seg
 };
 
+/**
+ * Cerrar el recordset
+ * @param {Object} conn
+ * @param {array} results
+ */
 ConnBd.closeRs = (conn, results) => {
   results.resultSet.close(err => {
     if (err) {
@@ -54,38 +67,137 @@ ConnBd.closeRs = (conn, results) => {
   });
 };
 
+/**
+ * Ejecutar una instruccion select
+ * @param {Object} conn
+ * @param {String} ssql
+ */
 ConnBd.ejecutarSql = (conn, ssql) => {
   //console.log(conn);
-  var arr;
-  conn.execute(ssql, [], { resultSet: true }, (err, results) => {
+  var cab, f, rs, dataRs;
+  var cab = conn.execute(ssql, [], { resultSet: true }, (err, results) => {
     if (err) {
       console.error(err.message);
       ConnBd.closeRs(conn, results);
       ConnBd.close(conn);
       return;
     }
+
     console.log("   Ejecutando la consulta");
-    console.log(results);
-    _getCabecera(conn, results);
-    //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numRows);
+    //console.log(results);
+
+    /* cab = () => {
+      return new Promise((success, reject) => {
+        //console.log("en promesaaaaa", _getCabecera(conn, results));
+        success(_getCabecera(conn, results));
+      });
+    };
+    cab().then(e => {
+      console.log("############en cabecera", e);
+      return e;
+    });*/
+
+    // _getCabecera(conn, results);
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numRows);
 
     //_getFilas(conn, results, numRows);
-    arr = results;
+    //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", f);
   });
-  return { conex: conn, r: arr };
 };
 
-ConnBd.getCabecera = () => {
-  return arrayHeader;
+ConnBd.sqlPromise = (conn, ssql) => {
+  return new Promise((success, reject) => {
+    console.log("aaaa");
+    success(conn.execute(ssql, [], { resultSet: true }));
+  });
 };
 
-//Obtener la cabecera
+ConnBd.getCabecera = (conn, results) => {
+  return new Promise((success, reject) => {
+    let cabecera = results.resultSet.metaData;
+    //console.log(cabecera.length)
+    success(
+      (arrayHeader = cabecera.map(item => {
+        return { header: item.name, key: item.name };
+      }))
+    );
+  });
+
+  //console.log(arrayHeader);
+};
+
+ConnBd.getFilas = (conn, results, numRows) => {
+  return new Promise((success, reject) => {
+    results.resultSet.getRows(numRows, function(err, rows) {
+      if (err) {
+        //si se produce un error
+        console.error(err.message);
+        ConnBd.closeRs(conn, results);
+        // rsClose(conn, results); //cerrar el recordset
+        ConnBd.close(conn); //cerrar la conexion
+        reloj.timeStop(); //parar el reloj
+        return;
+      } else if (rows.length > 0 || iRowsAffec > 0) {
+        //cuando hay datos en la consulta o cuando ya hay filas recuperadas
+        console.log(rows.length);
+        arrayData.push(rows); //guardar los datos en un array
+
+        iRowsAffec += rows.length; //filas recuperadas
+
+        mensaje = " Recibiendo datos ...... recibidos: " + iRowsAffec;
+        reloj.setMensaje(mensaje); //definir un nuevo mensaje
+        reloj.getMensaje(); //mostrar el mensaje
+
+        if (rows.length === numRows) {
+          //comprobacion la ultima vez por si hay mas registros
+          _getFilas(conn, results, numRows);
+        } else {
+          //cuando finaliza la recuperacion de datos
+          console.log("   Registros recuperados_1:", iRowsAffec);
+          ConnBd.closeRs(conn, results);
+          ConnBd.close(conn);
+          reloj.timeStop();
+          success(arrayData);
+          //TODO:   hacerlo como un metodo independiente donde se le pase Tipo, Nombre Fichero, nombre Hoja, y Array de datos
+          /* ExcelFile.crearLibro("stream", "prueba.xlsx");
+          ExcelFile.crearHoja("miHoja");
+          ExcelFile.getHoja("miHoja");
+          ExcelFile.setCabecera(arrayHeader);
+  
+          let i = 0;
+          arrayData.forEach(element => {
+            element.forEach(e => {
+              ExcelFile.dataControl(e, i, iRowsAffec);
+              i++;
+              if (i == iRowsAffec) {
+                reloj.timeStop();
+              }
+            });
+          });*/
+          //TODO:  Fin
+        }
+      } else {
+        //cuando no hay datos en la consulta
+        console.log("<<<< No hay datos para la consulta planteada >>>>");
+        reloj.timeStop();
+        ConnBd.closeRs(conn, results);
+        ConnBd.close(conn);
+      }
+    });
+  });
+};
+
+/**
+ * Ontener el nombre de los campos de la consulta
+ * @param {Object} conn
+ * @param {array} results
+ */
 function _getCabecera(conn, results) {
   let cabecera = results.resultSet.metaData;
   //console.log(cabecera.length)
-  arrayHeader = cabecera.map(item => {
+  return (arrayHeader = cabecera.map(item => {
     return { header: item.name, key: item.name };
-  });
+  }));
   //console.log(arrayHeader);
 }
 
@@ -125,6 +237,8 @@ function _getFilas(conn, results, numRows) {
         ConnBd.closeRs(conn, results);
         ConnBd.close(conn);
         reloj.timeStop();
+
+        return arrayData;
         //TODO:   hacerlo como un metodo independiente donde se le pase Tipo, Nombre Fichero, nombre Hoja, y Array de datos
         /* ExcelFile.crearLibro("stream", "prueba.xlsx");
         ExcelFile.crearHoja("miHoja");
