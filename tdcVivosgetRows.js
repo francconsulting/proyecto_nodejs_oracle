@@ -128,7 +128,7 @@ var tdcs = (err, conn) => {
       return true
     })
     .then((e) => {
-      console.log("------------------fin----------------------", e);
+      console.log("------------------   fin  ----------------------", e);
     });
 
 
