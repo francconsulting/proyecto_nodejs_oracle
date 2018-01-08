@@ -96,7 +96,7 @@ var tdcs = (err, conn) => {
   ssql += " WHERE ";
   ssql += " TDC.TESTTDC NOT IN (6,7,10)  ";
   ssql += " AND TDC.CLINNEG = 1 ";
-  ssql += " and rownum <= 2 ";
+  ssql += " and rownum <= 1001 ";
   //   ssql +=" and tdc.distribuidora = 'CZZ' ";
   //ssql = "select * FROM GIGA_OWNER.t_gg_F_tdc TDC where rownum < 5 "
   /* conn.execute(ssql, [], { resultSet: true }, (err, results) => {
@@ -125,10 +125,13 @@ var tdcs = (err, conn) => {
       ConnBd.getFilas(conn, rs, 250).then(results => {
         console.log("filas: ", results);
       });
+      return true
     })
-    .then(() => {
-      console.log("------------------fin----------------------");
+    .then((e) => {
+      console.log("------------------fin----------------------", e);
     });
+
+
 
   /*var c = () => {
     return new Promise((success, reject) => {
