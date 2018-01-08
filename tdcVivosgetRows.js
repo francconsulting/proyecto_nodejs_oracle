@@ -125,13 +125,11 @@ var tdcs = (err, conn) => {
       ConnBd.getFilas(conn, rs, 250).then(results => {
         console.log("filas: ", results);
       });
-      return true
+      return true;
     })
-    .then((e) => {
-      console.log("------------------   fin  ----------------------", e);
+    .then(e => {
+      console.log("------------------ fin ----------------------", e);
     });
-
-
 
   /*var c = () => {
     return new Promise((success, reject) => {
