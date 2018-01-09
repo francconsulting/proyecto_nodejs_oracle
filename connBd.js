@@ -59,12 +59,14 @@ ConnBd.close = conn => {
  * @param {array} results
  */
 ConnBd.closeRs = (conn, results) => {
-  results.resultSet.close(err => {
-    if (err) {
-      console.log("Error al cerrar el recordSet");
-    }
-    console.log("recordset Cerrado");
-  });
+  if (results != undefined) {
+    results.resultSet.close(err => {
+      if (err) {
+        console.log("Error al cerrar el recordSet");
+      }
+      console.log("recordset Cerrado");
+    });
+  }
 };
 
 /**
@@ -84,43 +86,92 @@ ConnBd.ejecutarSql = (conn, ssql) => {
     }
 
     console.log("   Ejecutando la consulta");
-    //console.log(results);
 
-    /* cab = () => {
-      return new Promise((success, reject) => {
-        //console.log("en promesaaaaa", _getCabecera(conn, results));
-        success(_getCabecera(conn, results));
-      });
-    };
-    cab().then(e => {
-      console.log("############en cabecera", e);
-      return e;
-    });*/
-
-    // _getCabecera(conn, results);
+    _getCabecera(conn, results);
     // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numRows);
 
-    //_getFilas(conn, results, numRows);
+    // _getFilas(conn, results, numRows);
     //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", f);
+    ConnBd.getAllRows(conn, results, numRows).then(data => {
+      console.log(arrayHeader.length, "---", arrayData.length);
+    });
   });
 };
 
-ConnBd.sqlPromise = (conn, ssql) => {
-  return new Promise((success, reject) => {
-    console.log("aaaa");
-    success(conn.execute(ssql, [], { resultSet: true }));
+ConnBd.ejecutarSqlPromise = (conn, ssql) => {
+  return new Promise((resolve, reject) => {
+    conn.execute(ssql, [], { resultSet: true }, (err, results) => {
+      if (err) {
+        //console.error(err.message);
+        reloj.timeStop();
+        ConnBd.closeRs(conn, results);
+        ConnBd.close(conn);
+        // return;
+        reject(err.message);
+      }
+      resolve(results);
+    });
+
+    // resolve(conn.execute(ssql, [], { resultSet: true }));
+  });
+};
+
+ConnBd.getAllRows = (conn, results, numRows) => {
+  return new Promise((resolve, reject) => {
+    function _getF(conn, results, numRows) {
+      results.resultSet.getRows(numRows, function(err, rows) {
+        if (err) {
+          //si se produce un error
+          console.error(err.message);
+          ConnBd.closeRs(conn, results);
+          // rsClose(conn, results); //cerrar el recordset
+          ConnBd.close(conn); //cerrar la conexion
+          reloj.timeStop(); //parar el reloj
+          return;
+        } else if (rows.length > 0 || iRowsAffec > 0) {
+          //cuando hay datos en la consulta o cuando ya hay filas recuperadas
+          console.log(rows.length);
+          arrayData.push(rows); //guardar los datos en un array
+
+          iRowsAffec += rows.length; //filas recuperadas
+
+          mensaje = " Recibiendo datos ...... recibidos: " + iRowsAffec;
+          reloj.setMensaje(mensaje); //definir un nuevo mensaje
+          reloj.getMensaje(); //mostrar el mensaje
+
+          if (rows.length === numRows) {
+            //comprobacion la ultima vez por si hay mas registros
+            _getF(conn, results, numRows);
+          } else {
+            //cuando finaliza la recuperacion de datos
+            console.log("   Registros recuperados:", iRowsAffec);
+            ConnBd.closeRs(conn, results);
+            ConnBd.close(conn);
+            reloj.timeStop();
+            resolve({ arrayData: arrayData, iRowsAffec: iRowsAffec });
+          }
+        } else {
+          //cuando no hay datos en la consulta
+          console.log("<<<< No hay datos para la consulta planteada >>>>");
+          reloj.timeStop();
+          ConnBd.closeRs(conn, results);
+          ConnBd.close(conn);
+        }
+      });
+    }
+    _getF(conn, results, numRows);
   });
 };
 
 ConnBd.getCabecera = (conn, results) => {
-  return new Promise((success, reject) => {
+  return new Promise((resolve, reject) => {
     let cabecera = results.resultSet.metaData;
     //console.log(cabecera.length)
-    success(
-      (arrayHeader = cabecera.map(item => {
-        return { header: item.name, key: item.name };
-      }))
-    );
+
+    arrayHeader = cabecera.map(item => {
+      return { header: item.name, key: item.name };
+    });
+    resolve(arrayHeader);
   });
 
   //console.log(arrayHeader);
@@ -150,7 +201,7 @@ ConnBd.getFilas = (conn, results, numRows) => {
 
         if (rows.length === numRows) {
           //comprobacion la ultima vez por si hay mas registros
-          _getFilas(conn, results, numRows);
+          ConnBd.getFilas(conn, results, numRows);
         } else {
           //cuando finaliza la recuperacion de datos
           console.log("   Registros recuperados_1:", iRowsAffec);

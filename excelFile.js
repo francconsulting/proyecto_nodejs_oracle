@@ -67,7 +67,9 @@ ExcelFile.dataControl = (data, nfila, nFilas) => {
   } else if (percent < 100) {
     percent = percent.toPrecision(4);
   }
-  console.log("guardando....", percent, "% ", nfila + 1, "de", nFilas);
+  if (percent % 10 == 0) {
+    console.log("guardando....", percent, "% ", nfila + 1, "de", nFilas);
+  }
   ExcelFile.addRow(data);
   if (nfila + 1 == nFilas) {
     ExcelFile.wsClose();

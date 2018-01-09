@@ -1,0 +1,10 @@
+.vs
+.vscode
+instantclient
+node_modules
+dbconfig.js
+*.xls*
+*Raw*
+
+//*gitignore
+index.js

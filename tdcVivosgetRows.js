@@ -18,10 +18,8 @@ var //oracledb = require("oracledb"),
   fs = require("fs"),
   ExcelFile = require("./excelFile"),
   reloj = require("./reloj"),
-  numRows = 100, //bloque de registros a recibir
-  iRowsAffec = 0,
-  stopRowEach = 20, //numero de registros
-  timePause = 3000, //milisegundos
+  numRows = 250, //bloque de registros a recibir
+  iRowsAffec = 0, //registros recuperados
   arrayHeader = [],
   arrayData = [];
 
@@ -45,6 +43,7 @@ oracledb.fetchArraySize = 100;*/
 var tdcs = (err, conn) => {
   if (err) {
     console.log("Error en la conexion");
+    return;
   }
   mensaje = "Conectado. Esperando a ejecutar la consulta.....";
   reloj.setMensaje(mensaje);
@@ -96,9 +95,10 @@ var tdcs = (err, conn) => {
   ssql += " WHERE ";
   ssql += " TDC.TESTTDC NOT IN (6,7,10)  ";
   ssql += " AND TDC.CLINNEG = 1 ";
-  ssql += " and rownum <= 1001 ";
-  //   ssql +=" and tdc.distribuidora = 'CZZ' ";
-  //ssql = "select * FROM GIGA_OWNER.t_gg_F_tdc TDC where rownum < 5 "
+  ssql += " and rownum <= 3000 ";
+  ssql += " and tdc.distribuidora = 'CZZ' ";
+
+  ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 10000 ";
   /* conn.execute(ssql, [], { resultSet: true }, (err, results) => {
     if (err) {
       console.error(err.message);
@@ -112,36 +112,47 @@ var tdcs = (err, conn) => {
   });*/
 
   //ConnBd.ejecutarSql(conn, ssql);
-  ConnBd.sqlPromise(conn, ssql)
-    .then(rs => {
-      //var rs = results;
-      ConnBd.getCabecera(conn, rs).then(results => {
-        console.log("cebecera: ", results);
-      });
 
-      return rs;
+  ConnBd.ejecutarSqlPromise(conn, ssql)
+    .then(results => {
+      ConnBd.getCabecera(conn, results)
+        .then(data => {
+          arrayHeader = data;
+          //console.log(data);
+        })
+        .then(() => {
+          ConnBd.getAllRows(conn, results, numRows)
+            .then(data => {
+              arrayData = data.arrayData;
+              iRowsAffec = data.iRowsAffec;
+              console.log(data.iRowsAffec);
+            })
+            .then(() => {
+              console.log("fin");
+              ExcelFile.crearLibro("stream", "prueba.xlsx");
+              ExcelFile.crearHoja("miHoja");
+              ExcelFile.getHoja("miHoja");
+              ExcelFile.setCabecera(arrayHeader);
+
+              let i = 0;
+              arrayData.forEach(element => {
+                element.forEach(e => {
+                  ExcelFile.dataControl(e, i, iRowsAffec);
+                  i++;
+                  if (i == iRowsAffec) {
+                    reloj.timeStop();
+                  }
+                });
+              });
+            });
+        });
+      /*ConnBd.getAllRows(conn, results, numRows).then(data => {
+      console.log(data.length);
+    });*/
     })
-    .then(rs => {
-      ConnBd.getFilas(conn, rs, 250).then(results => {
-        console.log("filas: ", results);
-      });
-      return true;
-    })
-    .then(e => {
-      console.log("------------------ fin ----------------------", e);
+    .catch(e => {
+      console.log(e);
     });
-
-  /*var c = () => {
-    return new Promise((success, reject) => {
-      let x = ConnBd.ejecutarSql(conn, ssql);
-      console.log(x);
-      success(x);
-    });
-  };
-
-  c().then(rs => {
-    console.log("aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", rs);
-  });*/
 };
 
 //PASAR ESTE METODO A EL ARCHIVO EXCEL
