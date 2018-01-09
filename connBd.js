@@ -5,7 +5,7 @@ var oracledb = require("oracledb"),
   reloj = require("./reloj"),
   numRows = 100,
   iRowsAffec = 0,
-  arrayData = [],
+  //arrayData = [],
   arrayHeader = [],
   ConnBd = () => {};
 
@@ -111,14 +111,14 @@ ConnBd.ejecutarSqlPromise = (conn, ssql) => {
       }
       resolve(results);
     });
-
-    // resolve(conn.execute(ssql, [], { resultSet: true }));
   });
 };
 
 ConnBd.getAllRows = (conn, results, numRows) => {
+  let arrayData = [];
   return new Promise((resolve, reject) => {
     function _getF(conn, results, numRows) {
+      numRows = numRows || 250;
       results.resultSet.getRows(numRows, function(err, rows) {
         if (err) {
           //si se produce un error

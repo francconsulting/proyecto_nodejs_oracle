@@ -18,7 +18,7 @@ var //oracledb = require("oracledb"),
   fs = require("fs"),
   ExcelFile = require("./excelFile"),
   reloj = require("./reloj"),
-  numRows = 250, //bloque de registros a recibir
+  numRows = 300, //bloque de registros a recibir
   iRowsAffec = 0, //registros recuperados
   arrayHeader = [],
   arrayData = [];
@@ -98,7 +98,7 @@ var tdcs = (err, conn) => {
   ssql += " and rownum <= 3000 ";
   ssql += " and tdc.distribuidora = 'CZZ' ";
 
-  ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 10000 ";
+  ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5000 ";
   /* conn.execute(ssql, [], { resultSet: true }, (err, results) => {
     if (err) {
       console.error(err.message);
@@ -154,81 +154,6 @@ var tdcs = (err, conn) => {
       console.log(e);
     });
 };
-
-//PASAR ESTE METODO A EL ARCHIVO EXCEL
-//Obtener la cabecera
-function getCabecera(conn, results) {
-  let cabecera = results.resultSet.metaData;
-  //console.log(cabecera.length)
-  arrayHeader = cabecera.map(item => {
-    return { header: item.name, key: item.name };
-  });
-  //console.log(arrayHeader);
-}
-//-------
-
-/**
- * Recuperar los registros de la consulta
- * @param {*} conn    conexion a la base de datos
- * @param {array} results  registros recuperados
- * @param {integer} numRows numero de registros a recuperar en cada recuperación de datos
- */
-function getFilas(conn, results, numRows) {
-  results.resultSet.getRows(numRows, function(err, rows) {
-    if (err) {
-      //si se produce un error
-      console.error(err.message);
-      ConnBd.closeRs(conn, results);
-      // rsClose(conn, results); //cerrar el recordset
-      ConnBd.close(conn); //cerrar la conexion
-      reloj.timeStop(); //parar el reloj
-      return;
-    } else if (rows.length > 0 || iRowsAffec > 0) {
-      //cuando hay datos en la consulta o cuando ya hay filas recuperadas
-      console.log(rows.length);
-      arrayData.push(rows); //guardar los datos en un array
-
-      iRowsAffec += rows.length; //filas recuperadas
-
-      mensaje = " Recibiendo datos ...... recibidos: " + iRowsAffec;
-      reloj.setMensaje(mensaje); //definir un nuevo mensaje
-      reloj.getMensaje(); //mostrar el mensaje
-
-      if (rows.length === numRows) {
-        //comprobacion la ultima vez por si hay mas registros
-        getFilas(conn, results, numRows);
-      } else {
-        //cuando finaliza la recuperacion de datos
-        console.log("   Registros recuperados_1:", iRowsAffec);
-        ConnBd.closeRs(conn, results);
-        ConnBd.close(conn);
-        //TODO:   hacerlo como un metodo independiente donde se le pase Tipo, Nombre Fichero, nombre Hoja, y Array de datos
-        ExcelFile.crearLibro("stream", "prueba.xlsx");
-        ExcelFile.crearHoja("miHoja");
-        ExcelFile.getHoja("miHoja");
-        ExcelFile.setCabecera(arrayHeader);
-
-        let i = 0;
-        arrayData.forEach(element => {
-          element.forEach(e => {
-            ExcelFile.dataControl(e, i, iRowsAffec);
-            i++;
-            if (i == iRowsAffec) {
-              reloj.timeStop();
-            }
-          });
-        });
-        //TODO:  Fin
-      }
-    } else {
-      //cuando no hay datos en la consulta
-      console.log("<<<< No hay datos para la consulta planteada >>>>");
-      reloj.timeStop();
-      ConnBd.closeRs(conn, results);
-      ConnBd.close(conn);
-    }
-  });
-}
 
 //conectar(tdcs);
 
