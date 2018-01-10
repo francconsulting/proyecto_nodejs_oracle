@@ -33,7 +33,7 @@ fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
 });
 
-var paramsSql = { distri: "CZZ", bv: 250 }; //parametros para la consulta
+var paramsSql = { rowlimit : 5000,  distri: "CZZ"}; //parametros para la consulta
 
 var configExcel = {
   tipo: "stream",
