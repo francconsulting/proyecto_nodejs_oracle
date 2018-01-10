@@ -5,6 +5,6 @@ node_modules
 dbconfig.js
 *.xls*
 *Raw*
-
+*.sql
 //*gitignore
 index.js
