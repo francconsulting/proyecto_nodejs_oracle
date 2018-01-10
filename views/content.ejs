@@ -1,0 +1,56 @@
+<section class="container">
+	<div class="item logo">
+	
+	</div>
+	<div class="item">
+		<h1>
+			<a href="/"><%= title %></a>
+		</h1>
+	</div>
+	<article class="item">
+		<% if (!data.length) { %>
+		<p class="error">NO Hay datos</p>
+		<%} else {%>
+			<table class="table">
+				<caption>Pelis</caption>
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Titulo</th>
+						<th>Año</th>
+						<th>Rating</th>
+						<th>Poster</th>
+						<th colspan="2">
+							<form  method="GET" action="/agregar" accept-charset="utf-8">
+								<input type="submit" value="Agregar" class="boton add">
+							</form>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% data.forEach( function(pelis) {%>
+						<tr>
+							<td><%=pelis.pelis_id%></td>
+							<td><%=pelis.title%></td>
+							<td><%=pelis.anio%></td>
+							<td><%=pelis.rating%></td>
+							<td><img src="<%=pelis.image%>" alt="<%="titulo: " + pelis.title%>" ></td>
+							<td>
+								<form method="GET" action="/editar/<%=pelis.pelis_id%>"  accept-charset="utf-8">
+								<input type="submit" value="Editar" class="boton edit">
+							</form>
+							</td>
+							<td>
+								<form method="POST" action="/eliminar/<%=pelis.pelis_id%>"  accept-charset="utf-8">
+								<input type="button" id="btnEliminar" value="Eliminar" class="boton delete">
+								<input type="hidden" name="_method" id="_method" value="DELETE">
+							</form>
+							</td>
+							</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		<%}%>
+	</article>
+</section>
+<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>

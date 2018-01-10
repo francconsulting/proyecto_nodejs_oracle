@@ -1,6 +1,6 @@
 'use strict'
 
-var PelisController = require('../controllers/pelis-controller'),
+var RestController = require('../controllers/rest-controller'),
     express = require('express'),
     router = express.Router()
 /**
@@ -60,8 +60,8 @@ function errorConn(err, res) {
 }
 
 router
-    .get('/', PelisController.getAll)
-    .get('/agregar', PelisController.addForm)
+    .get('/', RestController.getCabecera)
+    /*.get('/agregar', PelisController.addForm)
     //.post('/agregar', PelisController.insert)     //unificar el método insert junto con el actualizar en el metodo save
     .post('/agregar', PelisController.save)
     .get('/editar/:pelis_id', PelisController.getOne)
@@ -70,7 +70,7 @@ router
     .put('/actualizar/:pelis_id', PelisController.save)       
     //.post('/eliminar/:pelis_id', PelisController.delete)
     .delete('/eliminar/:pelis_id', PelisController.delete)
-    // .get('/tpl/:id', tpl)     //ESTA RUTA NO LA VAMOS A USAR
-    .use(PelisController.error404) //se pone use(middlware) porque no podemos definir una ruta  y debe estar al final
+    // .get('/tpl/:id', tpl)     //ESTA RUTA NO LA VAMOS A USAR*/
+    .use(RestController.error404) //se pone use(middlware) porque no podemos definir una ruta  y debe estar al final
 
 module.exports = router
