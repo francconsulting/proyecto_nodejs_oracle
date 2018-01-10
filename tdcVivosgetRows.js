@@ -29,6 +29,11 @@ var //oracledb = require("oracledb"),
 fs.readFile("consulta TDC vivos.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
 });
+fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
+  ssql = data;
+});
+
+var paramsSql = { distri: "CZZ", bv: 250 }; //parametros para la consulta
 
 var configExcel = {
   tipo: "stream",
@@ -45,7 +50,7 @@ var tdcs = (err, conn) => {
   reloj.setMensaje(mensaje);
   reloj.timeStart();
 
-  ConnBd.ejecutarSqlPromise(conn, ssql)
+  ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
     .then(results => {
       ConnBd.getCabecera(conn, results)
         .then(data => {

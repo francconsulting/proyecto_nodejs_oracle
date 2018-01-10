@@ -75,10 +75,12 @@ ConnBd.closeRs = (conn, results) => {
  * Ejecutar una instuccion SQL como promesa
  * @param {Object} conn  conexion con la Bd
  * @param {String} ssql  instruccion sql a ejecutar
+ * @param {array} params  parametros de la instuccion sql
  */
-ConnBd.ejecutarSqlPromise = (conn, ssql) => {
+ConnBd.ejecutarSqlPromise = (conn, ssql, params) => {
   return new Promise((resolve, reject) => {
-    conn.execute(ssql, [], { resultSet: true }, (err, results) => {
+    let parametros = params || [];
+    conn.execute(ssql, parametros, { resultSet: true }, (err, results) => {
       if (err) {
         //console.error(err.message);
         reloj.timeStop();
