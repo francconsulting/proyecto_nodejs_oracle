@@ -110,15 +110,20 @@ var tdcs = (err, conn) => {
     let sCupsAnt = "",
       sSolAnt = "",
       sCupsSolAnt = "",
-      aDatosAnt = [];
-      aMensajesTmp = [] 
+      aDatosAnt = [],
+      aMensajesTmp = [],
+      aDatosFinal = [] 
 
+      aMensajesTmp.fill(null, 0, 13)
     data.forEach(e => {
       //console.log(e[2]);
       if (sCupsSolAnt != (e[1]+ "-"+ e[2]) && sCupsSolAnt != "") {
-        console.log(e[1], " ", e[2], " -----------", aDatosAnt," ----", aMensajesTmp.toString(),"       ", sCupsSolAnt );
+        console.log(e[1], " ", e[2], " -----------", aDatosAnt.concat(aMensajesTmp)," ----", aMensajesTmp.toString(),"       ", sCupsSolAnt );
+        aMensajesTmp.shift()
+        aDatosFinal.push(aDatosAnt.concat(aMensajesTmp))
         aDatosAnt = [];
-        aMensajesTmp = []
+        //aMensajesTmp = []
+        aMensajesTmp.fill(null, 0, 13)
       }
       sCupsSolAnt = (e[1]+"-"+e[2]);
       sCupsAnt = e[1];
@@ -129,43 +134,47 @@ var tdcs = (err, conn) => {
 
       switch (e[22]) {
         case '01':
-        console.log('>>>>>>>>>>>>>>>>>',e[22])
-          aDatosAnt[19] = e[22]
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
         case '02':
-          aDatosAnt[20] = e[22]
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 03:
-          aDatosAnt[21] = e[22]
+        case '03':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 04:
-          aDatosAnt[22] = e[22]
+        case '04':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break; 
-        case 05:
-          aDatosAnt[23] = e[22]
+        case '05':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;  
-        case 06:
-          aDatosAnt[24] = e[22]
+        case '06':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;    
-          case 07:
-          aDatosAnt[25] = e[22]
+          case '07':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 08:
-          aDatosAnt[26] = e[22]
+        case '08':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 09:
-          aDatosAnt[27] = e[22]
+        case '09':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-          case 10:
-          aDatosAnt[28] = e[22]
+          case '10':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 11:
-          aDatosAnt[29] = e[22]
+        case '11':
+          aMensajesTmp[parseInt(e[22])] = e[22]
           break;
-        case 12:
-          aDatosAnt[30] = e[22]
-          break;      
+        case '12':
+          aMensajesTmp[parseInt(e[22])] = e[22]
+          break;    
+         default:
+         console.log('>>>>>>>>>>>>>>>>>',e[22])
+         aMensajesTmp[0] = Null
+         
       }  
+    
       //aDatosAnt[19] = aMensajesTmp
       console.log(sCupsAnt, " ", sSolAnt, " ------#-----", aDatosAnt.toString()," ----", aMensajesTmp.toString(), " <");
       i++;
@@ -173,12 +182,35 @@ var tdcs = (err, conn) => {
         reloj.timeStop();
       }
     });
-    console.log(sCupsAnt, " ", sSolAnt, " ----..-----", aDatosAnt," --", aMensajesTmp.toString());
+    console.log(sCupsAnt, " ", sSolAnt, " ----..-----", aDatosAnt.concat(aMensajesTmp)," --", aMensajesTmp.toString());
+    aMensajesTmp.shift()
+    aDatosFinal.push(aDatosAnt.concat(aMensajesTmp))
+    return aDatosFinal;
+  })
+  .then( (aDatosFinal) => {
+    let aCabeceraTmp = ['Id','CUPS','SOL','PM','FECHA_1','ESTADO','FECHA_2','PLAZO_LEGAL','FECHA_3','ESTADO_2', 'FECHA_4','CORRECTIVO_VU',
+                      'ESTADO_PROCESS','TIPO', 'SUBTIPO','MOTIVO','', 'EMAIL' ,'NO COMUNIC',
+                      "PASO01", "PASO02","PASO03", "PASO04","PASO05", "PASO06","PASO7", "PASO08","PASO09", "PASO10","PASO11", "PASO12" ]
+
+  let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+    iRowsAffec = aDatosFinal.length
+    ExcelFile.crearLibro("stream", "miLibroOpenofice.xlsx")
+    ExcelFile.crearHoja('mihoja')
+    ExcelFile.getHoja('mihoja')
+    ExcelFile.setCabecera(arrayHeaderTmp)
+    let i = 0;
+                aDatosFinal.forEach(e => {
+                console.log(e.toString())
+                  ExcelFile.dataControl(e, i, iRowsAffec);
+                  i++;
+                  if (i == iRowsAffec) {
+                    reloj.timeStop();
+                  }
+                
+              });
   });
 
-
-
-  let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(["Paso01", "Paso02","Paso03", "Paso04","Paso05", "Paso06","Paso07", "Paso08","Paso09", "Paso10","Paso11", "Paso12"]);
+  
 
   /* ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
     .then(results => {
