@@ -29,9 +29,9 @@ var //oracledb = require("oracledb"),
 fs.readFile("consulta TDC vivos.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
 });
-fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
+/*fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
-});
+});*/
 
 var paramsSql = { distri: "CZZ", bv: 250 }; //parametros para la consulta
 

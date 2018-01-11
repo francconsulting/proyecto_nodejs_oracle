@@ -38,6 +38,18 @@ ExcelFile.setCabecera = arrayCabecera => {
   ws.columns = arrayCabecera;
 };
 
+ExcelFile.setCabeceraFromArray = arrayCabecera => {
+  //console.log(arrayCabecera);
+  let arrayHeader = [];
+  arrayHeader = arrayCabecera.map(item => {
+    return { name: item };
+  });
+  arrayHeader = arrayHeader.map(item => {
+    return { header: item.name, key: item.name };
+  });
+  return arrayHeader;
+};
+
 ExcelFile.addRow = data => {
   ws.addRow(data).commit();
 };
@@ -68,7 +80,7 @@ ExcelFile.dataControl = (data, nfila, nFilas) => {
     percent = percent.toPrecision(4);
   }
   //if (percent % 10 == 0.5) {
-    console.log("guardando....", percent, "% ", nfila + 1, "de", nFilas);
+  console.log("guardando....", percent, "% ", nfila + 1, "de", nFilas);
   //}
   ExcelFile.addRow(data);
   if (nfila + 1 == nFilas) {

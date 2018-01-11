@@ -160,7 +160,7 @@ ConnBd.getCabecera = (conn, results) => {
   return new Promise((resolve, reject) => {
     let arrayHeader = [],
       cabecera = results.resultSet.metaData;
-    //console.log(cabecera.length)
+    // console.log(cabecera);
 
     arrayHeader = cabecera.map(item => {
       return { header: item.name, key: item.name };
