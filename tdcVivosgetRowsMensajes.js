@@ -105,112 +105,144 @@ var tdcs = (err, conn) => {
   reloj.setMensaje(mensaje);
   reloj.timeStart();
 
-  json2row("mensajes.json").then(data => {
-    var i = 0;
-    let sCupsAnt = "",
-      sSolAnt = "",
-      sCupsSolAnt = "",
-      aDatosAnt = [],
-      aMensajesTmp = [],
-      aDatosFinal = [] 
+  json2row("mensajes.json")
+    .then(data => {
+      var i = 0;
+      let sCupsAnt = "",
+        sSolAnt = "",
+        sCupsSolAnt = "",
+        aDatosAnt = [],
+        aMensajesTmp = [],
+        aDatosFinal = [];
 
-      aMensajesTmp.fill(null, 0, 13)
-    data.forEach(e => {
-      //console.log(e[2]);
-      if (sCupsSolAnt != (e[1]+ "-"+ e[2]) && sCupsSolAnt != "") {
-        console.log(e[1], " ", e[2], " -----------", aDatosAnt.concat(aMensajesTmp)," ----", aMensajesTmp.toString(),"       ", sCupsSolAnt );
-        aMensajesTmp.shift()
-        aDatosFinal.push(aDatosAnt.concat(aMensajesTmp))
-        aDatosAnt = [];
-        //aMensajesTmp = []
-        aMensajesTmp.fill(null, 0, 13)
-      }
-      sCupsSolAnt = (e[1]+"-"+e[2]);
-      sCupsAnt = e[1];
-      sSolAnt = e[2];
-      aDatosAnt = e.slice(0,19) //(e[1]+ ","+e[2]+ ","+ e[22]); //todo crear un nuevo array con solo algunos elementos
-     // aMensajesTmp.push(e[22])
-     // aMensajesTmp.sort()
+      aMensajesTmp.fill(null, 0, 13);
+      data.forEach(e => {
+        //console.log(e[2]);
+        if (sCupsSolAnt != e[1] + "-" + e[2] && sCupsSolAnt != "") {
+          //console.log(e[1]," ",e[2]," -----------",aDatosAnt.concat(aMensajesTmp)," ----",aMensajesTmp.toString(),            "       ",            sCupsSolAnt          );
+          aMensajesTmp.shift();
+          aDatosFinal.push(aDatosAnt.concat(aMensajesTmp));
+          aDatosAnt = [];
+          //aMensajesTmp = []
+          aMensajesTmp.fill(null, 0, 13);
+        }
+        sCupsSolAnt = e[1] + "-" + e[2];
+        sCupsAnt = e[1];
+        sSolAnt = e[2];
+        aDatosAnt = e.slice(0, 19); //(e[1]+ ","+e[2]+ ","+ e[22]); //todo crear un nuevo array con solo algunos elementos
+        // aMensajesTmp.push(e[22])
+        // aMensajesTmp.sort()
 
-      switch (e[22]) {
-        case '01':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '02':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '03':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '04':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break; 
-        case '05':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;  
-        case '06':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;    
-          case '07':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '08':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '09':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-          case '10':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '11':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;
-        case '12':
-          aMensajesTmp[parseInt(e[22])] = e[22]
-          break;    
-         default:
-         console.log('>>>>>>>>>>>>>>>>>',e[22])
-         aMensajesTmp[0] = Null
-         
-      }  
-    
-      //aDatosAnt[19] = aMensajesTmp
-      console.log(sCupsAnt, " ", sSolAnt, " ------#-----", aDatosAnt.toString()," ----", aMensajesTmp.toString(), " <");
-      i++;
-      if (i == data.length) {
-        reloj.timeStop();
-      }
+        switch (e[22]) {
+          case "01":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "02":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "03":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "04":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "05":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "06":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "07":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "08":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "09":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "10":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "11":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          case "12":
+            aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
+            break;
+          default:
+            console.log(">>>>>>>>>>>>>>>>>", e[22]);
+            aMensajesTmp[0] = Null;
+        }
+        aMensajesTmp[13] =
+          '"=SI(Y(U2="";G2<>"";NO(O(R2;S2)));SI(DIAS.LAB.INTL(G2;HOY();11)<5;"En Plazo";SI(DIAS.LAB.INTL(G2;HOY();11)=5;"Riesgo Incumplimiento";"FALTA_02"));"")"';
+        aMensajesTmp[15] =
+          '"=IF(AND(RC[-19]<>""B1"",RC[-28]=""Rejected""),IF(RC[-11]="""",""FALTA_04"",""""),"""")"';
+        //aDatosAnt[19] = aMensajesTmp
+        //  console.log( sCupsAnt," ",sSolAnt," ------#-----",aDatosAnt.toString()," ----",aMensajesTmp.toString()," <");
+        i++;
+        if (i == data.length) {
+          reloj.timeStop();
+        }
+      });
+      //   console.log( sCupsAnt," ", sSolAnt," ----..-----",        aDatosAnt.concat(aMensajesTmp),        " --",        aMensajesTmp.toString()      );
+      aMensajesTmp.shift();
+      aDatosFinal.push(aDatosAnt.concat(aMensajesTmp));
+      return aDatosFinal;
+    })
+    .then(aDatosFinal => {
+      let aCabeceraTmp = [
+        "Id",
+        "CUPS",
+        "Código interno de solicitud",
+        "PM",
+        "Fecha recepción",
+        "Estado solicitud",
+        "Fecha aceptación INFORMES",
+        "Estado plazo aceptación legal",
+        "Fecha activación",
+        "Estado plazo activación legal",
+        "Fecha anulación",
+        "Fecha rechazo",
+        "CORRECTIVO_VU",
+        "Estado procesamiento",
+        "proceso",
+        "motivo",
+        "subtipos",
+        "no enviar comunicacion",
+        "ATR Directo",
+        "PASO01",
+        "PASO02",
+        "PASO03",
+        "PASO04",
+        "PASO05",
+        "PASO06",
+        "PASO7",
+        "PASO08",
+        "PASO09",
+        "PASO10",
+        "PASO11",
+        "PASO12"
+      ];
+
+      let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+      iRowsAffec = aDatosFinal.length;
+      // ExcelFile.crearLibro("stream", "miLibroOpenofice.xlsx");
+      ExcelFile.getLibro("libroManual.xlsx");
+      ExcelFile.getHoja("Hoja1");
+      // ExcelFile.crearHoja("mihoja");
+      // ExcelFile.getHoja("mihoja");
+      // ExcelFile.setCabecera(arrayHeaderTmp);
+      let i = 0;
+      aDatosFinal.forEach(e => {
+        console.log(e.toString());
+        // ExcelFile.dataControl(e, i, iRowsAffec);
+        i++;
+        if (i == iRowsAffec) {
+          reloj.timeStop();
+        }
+      });
     });
-    console.log(sCupsAnt, " ", sSolAnt, " ----..-----", aDatosAnt.concat(aMensajesTmp)," --", aMensajesTmp.toString());
-    aMensajesTmp.shift()
-    aDatosFinal.push(aDatosAnt.concat(aMensajesTmp))
-    return aDatosFinal;
-  })
-  .then( (aDatosFinal) => {
-    let aCabeceraTmp = ['Id','CUPS','SOL','PM','FECHA_1','ESTADO','FECHA_2','PLAZO_LEGAL','FECHA_3','ESTADO_2', 'FECHA_4','CORRECTIVO_VU',
-                      'ESTADO_PROCESS','TIPO', 'SUBTIPO','MOTIVO','', 'EMAIL' ,'NO COMUNIC',
-                      "PASO01", "PASO02","PASO03", "PASO04","PASO05", "PASO06","PASO7", "PASO08","PASO09", "PASO10","PASO11", "PASO12" ]
-
-  let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
-    iRowsAffec = aDatosFinal.length
-    ExcelFile.crearLibro("stream", "miLibroOpenofice.xlsx")
-    ExcelFile.crearHoja('mihoja')
-    ExcelFile.getHoja('mihoja')
-    ExcelFile.setCabecera(arrayHeaderTmp)
-    let i = 0;
-                aDatosFinal.forEach(e => {
-                console.log(e.toString())
-                  ExcelFile.dataControl(e, i, iRowsAffec);
-                  i++;
-                  if (i == iRowsAffec) {
-                    reloj.timeStop();
-                  }
-                
-              });
-  });
-
-  
 
   /* ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
     .then(results => {

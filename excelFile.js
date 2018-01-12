@@ -25,6 +25,86 @@ ExcelFile.crearLibro = (tipo, nombreArchivo) => {
   wb.created = new Date(); //fecha creacion
 };
 
+ExcelFile.getLibro = nombreArchivo => {
+  var wb = new Excel.Workbook();
+  wb.xlsx.readFile("mensajes.xlsx").then(function(data) {
+    // use workbook
+    console.log("#####################");
+
+    console.log(ExcelFile.getHojasLibro(data));
+
+    let filas = data._worksheets[1]._rows,
+      aFilas = [],
+      aFila = [];
+
+    filas.forEach(fila => {
+      fila._cells.forEach(element => {
+        console.log(element);
+        // aFila.push(element._value.model.value);
+        aFila.push(element._value.model.value);
+      });
+      aFilas.push(aFila);
+    });
+    /* console.log("-->", aFilas[0]);
+    console.log("-->", aFilas[1]);*/
+
+    let fila = data._worksheets[1]._rows[1]._cells;
+
+    console.log("---------------------");
+    fila.forEach(element => {
+      console.log(element._address, " - ", element._value);
+    });
+    //console.log(ExcelFile.getCabecera(data, "mensajes"));
+  });
+};
+
+ExcelFile.getCabecera = (dataBook, nameHoja) => {
+  let cabecera = "",
+    aCabecera = [],
+    hojas = dataBook._worksheets;
+
+  hojas.forEach(element => {
+    if (nameHoja == element.name) {
+      cabecera = dataBook._worksheets[element.id]._rows[0]._cells;
+    }
+  });
+  cabecera.forEach(element => {
+    // console.log(element.id)
+    aCabecera.push(element.value);
+  });
+  //console.log(aCabecera);
+  return aCabecera;
+};
+
+ExcelFile.getRows = (dataBook, nameHoja) => {
+  let fila = "",
+    aFilas = [],
+    hojas = dataBook._worksheets;
+
+  hojas.forEach(element => {
+    if (nameHoja == element.name) {
+      cabecera = dataBook._worksheets[element.id]._rows[0]._cells;
+    }
+  });
+  cabecera.forEach(element => {
+    aCabecera.push(element.value);
+  });
+  //console.log(aCabecera);
+  return aCabecera;
+};
+/**
+ *
+ * @param {*} dataBook  Libro recuperado
+ */
+ExcelFile.getHojasLibro = dataBook => {
+  let hojas = dataBook._worksheets,
+    aHojas = [];
+  hojas.forEach(element => {
+    aHojas.push(element.name);
+  });
+  return aHojas;
+};
+
 ExcelFile.crearHoja = nombreHoja => {
   var nameSheet = nombreHoja || "hoja 1";
   wb.addWorksheet(nameSheet);
@@ -40,12 +120,16 @@ ExcelFile.setCabecera = arrayCabecera => {
 
 ExcelFile.setCabeceraFromArray = arrayCabecera => {
   //console.log(arrayCabecera);
-  let arrayHeader = [];
+  let arrayHeader = [],
+    anchoCols = 0;
   arrayHeader = arrayCabecera.map(item => {
     return { name: item };
   });
   arrayHeader = arrayHeader.map(item => {
-    return { header: item.name, key: item.name };
+    item.name.length < 15
+      ? (anchoCols = 15)
+      : (anchoCols = item.name.length + 1);
+    return { header: item.name, key: item.name, width: anchoCols };
   });
   return arrayHeader;
 };
