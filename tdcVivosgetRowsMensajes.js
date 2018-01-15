@@ -226,14 +226,14 @@ var tdcs = (err, conn) => {
       ];
 
      // let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
-     ExcelFile.getLibro("libroManual.xlsx");
-     ExcelFile.getHoja("Hoja1");
+     ExcelFile.getLibro("mensajes.xlsx");
+     ExcelFile.getHoja("miHoja");
       iRowsAffec = aDatosFinal.length;
-      ExcelFile.crearLibro("stream", "mensajes.xlsx");
+    //  ExcelFile.crearLibro("stream", "mensajes.xlsx");
    
-       ExcelFile.crearHoja("mihoja");
-       ExcelFile.getHoja("mihoja");
-       ExcelFile.setCabecera(arrayHeaderTmp);
+    //   ExcelFile.crearHoja("mihoja");
+    //   ExcelFile.getHoja("mihoja");
+    //   ExcelFile.setCabecera(arrayHeaderTmp);
       let i = 0;
       aDatosFinal.forEach(e => {
         console.log(e.toString());

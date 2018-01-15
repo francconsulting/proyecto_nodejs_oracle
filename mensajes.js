@@ -65,7 +65,19 @@ var json2row = fileName => {
         // toExcel(element)
 
         element.forEach(e => {
-          i++;
+          i++;/**
+          * ejecutar siempre esto en la ventana donde se inicia node
+          *  export LD_LIBRARY_PATH=/opt/oracle/instantclient:$LD_LIBRARY_PATH
+          *
+          * parta ejecutar manualmente con aumento de memoria de nodejs necesario para
+          * que corra de forma correcta la api:
+          *      node tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192
+          *
+          * Para ejecutarlo automaticamente, se ha introducido en el package.json la
+          * linea "dev" en escript. Se debe ejecutar el siguiente comando:
+          *      npm run dev
+          *
+          */
           arrayData.push(e);
         });
       });
@@ -179,8 +191,7 @@ var tdcs = (err, conn) => {
             console.log(">>>>>>>>>>>>>>>>>", e[22]);
             aMensajesTmp[0] = Null;
         }
-        aMensajesTmp[13] =
-          '"=SI(Y(U2="";G2<>"";NO(O(R2;S2)));SI(DIAS.LAB.INTL(G2;HOY();11)<5;"En Plazo";SI(DIAS.LAB.INTL(G2;HOY();11)=5;"Riesgo Incumplimiento";"FALTA_02"));"")"';
+        aMensajesTmp[13] = "=T"+i + "+D"+i
         aMensajesTmp[15] =
           '"=IF(AND(RC[-19]<>""B1"",RC[-28]=""Rejected""),IF(RC[-11]="""",""FALTA_04"",""""),"""")"';
         //aDatosAnt[19] = aMensajesTmp
@@ -248,6 +259,7 @@ var tdcs = (err, conn) => {
           reloj.timeStop();
         }
       });
+      
     });
 
   /* ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)

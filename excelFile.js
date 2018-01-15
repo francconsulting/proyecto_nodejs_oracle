@@ -25,9 +25,14 @@ ExcelFile.crearLibro = (tipo, nombreArchivo) => {
   wb.created = new Date(); //fecha creacion
 };
 
+ExcelFile.setWB = () => {
+  var wb = new Excel.Workbook();
+  return wb;
+}
+
 ExcelFile.getLibro = nombreArchivo => {
   var wb = new Excel.Workbook();
-  wb.xlsx.readFile("mensajes.xlsx").then(function(data) {
+  wb.xlsx.readFile(nombreArchivo).then(function(data) {
     // use workbook
     console.log("#####################");
 
@@ -111,7 +116,7 @@ ExcelFile.crearHoja = nombreHoja => {
 };
 
 ExcelFile.getHoja = nombreHoja => {
-  ws = wb.getWorksheet(nombreHoja);
+  return ws = wb.getWorksheet(nombreHoja);
 };
 
 ExcelFile.setCabecera = arrayCabecera => {
@@ -137,6 +142,10 @@ ExcelFile.setCabeceraFromArray = arrayCabecera => {
 ExcelFile.addRow = data => {
   ws.addRow(data).commit();
 };
+ExcelFile.getLastRow = (nombreHoja) =>{
+  return nombreHoja.lastRow
+}
+
 
 ExcelFile.wsClose = () => {
   ws.commit();
