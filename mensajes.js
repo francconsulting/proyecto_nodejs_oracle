@@ -52,6 +52,10 @@ var configExcel = {
     console.log("fin creacion del fichero ", namefile);
   });
 };*/
+
+/**
+ * Lectura de Json y convertir a array
+ */
 var json2row = fileName => {
   return new Promise((resolve, reject) => {
     fs.readFile(fileName, { encoding: "UTF-8" }, (err, data) => {
@@ -129,6 +133,7 @@ var tdcs = (err, conn) => {
         sCupsSolAnt = e[1] + "-" + e[2];
         sCupsAnt = e[1];
         sSolAnt = e[2];
+        e[0] = e[1] + "-" + e[2];
         aDatosAnt = e.slice(0, 19); //(e[1]+ ","+e[2]+ ","+ e[22]); //todo crear un nuevo array con solo algunos elementos
         // aMensajesTmp.push(e[22])
         // aMensajesTmp.sort()
@@ -225,19 +230,19 @@ var tdcs = (err, conn) => {
         "PASO12"
       ];
 
-     // let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
-     ExcelFile.getLibro("libroManual.xlsx");
-     ExcelFile.getHoja("Hoja1");
+      let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+      //ExcelFile.getLibro("libroManual.xlsx");
+      //ExcelFile.getHoja("Hoja1");
       iRowsAffec = aDatosFinal.length;
       ExcelFile.crearLibro("stream", "mensajes.xlsx");
-   
-       ExcelFile.crearHoja("mihoja");
-       ExcelFile.getHoja("mihoja");
-       ExcelFile.setCabecera(arrayHeaderTmp);
+
+      ExcelFile.crearHoja("mihoja");
+      ExcelFile.getHoja("mihoja");
+      ExcelFile.setCabecera(arrayHeaderTmp);
       let i = 0;
       aDatosFinal.forEach(e => {
         console.log(e.toString());
-         ExcelFile.dataControl(e, i, iRowsAffec);
+        ExcelFile.dataControl(e, i, iRowsAffec);
         i++;
         if (i == iRowsAffec) {
           reloj.timeStop();
