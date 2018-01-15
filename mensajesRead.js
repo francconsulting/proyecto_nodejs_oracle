@@ -123,7 +123,10 @@ var tdcs = (err, conn) => {
 
   var wb = ExcelFile.setWB ()
   wb.xlsx.readFile('mensajes.xlsx').then( ()=> {
+    
     let ws = wb.getWorksheet(1);
+    let lastRow = ws.lastRow
+    console.log(lastRow.number)
     ws.addRow([3,"SAM",new Date()]).commit()
     ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
     wb.xlsx.writeFile('mensajes.xlsx').then(

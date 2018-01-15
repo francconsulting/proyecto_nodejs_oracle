@@ -107,6 +107,7 @@ ExcelFile.getHojasLibro = dataBook => {
   hojas.forEach(element => {
     aHojas.push(element.name);
   });
+
   return aHojas;
 };
 
@@ -118,6 +119,7 @@ ExcelFile.crearHoja = nombreHoja => {
 ExcelFile.getHoja = nombreHoja => {
   return ws = wb.getWorksheet(nombreHoja);
 };
+
 
 ExcelFile.setCabecera = arrayCabecera => {
   ws.columns = arrayCabecera;
@@ -142,8 +144,9 @@ ExcelFile.setCabeceraFromArray = arrayCabecera => {
 ExcelFile.addRow = data => {
   ws.addRow(data).commit();
 };
-ExcelFile.getLastRow = (nombreHoja) =>{
-  return nombreHoja.lastRow
+ExcelFile.getLastRow = (ws) =>{
+  console.log(ws.lastRow)
+  return ws.lastRow
 }
 
 

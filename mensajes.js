@@ -246,7 +246,7 @@ var tdcs = (err, conn) => {
       //ExcelFile.getHoja("Hoja1");
       iRowsAffec = aDatosFinal.length;
       ExcelFile.crearLibro("stream", "mensajes.xlsx");
-
+      ExcelFile.crearHoja("hojita1");
       ExcelFile.crearHoja("mihoja");
       ExcelFile.getHoja("mihoja");
       ExcelFile.setCabecera(arrayHeaderTmp);
