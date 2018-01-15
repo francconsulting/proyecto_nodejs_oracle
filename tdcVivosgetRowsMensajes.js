@@ -225,18 +225,19 @@ var tdcs = (err, conn) => {
         "PASO12"
       ];
 
-      let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+     // let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+     ExcelFile.getLibro("libroManual.xlsx");
+     ExcelFile.getHoja("Hoja1");
       iRowsAffec = aDatosFinal.length;
-      // ExcelFile.crearLibro("stream", "miLibroOpenofice.xlsx");
-      ExcelFile.getLibro("libroManual.xlsx");
-      ExcelFile.getHoja("Hoja1");
-      // ExcelFile.crearHoja("mihoja");
-      // ExcelFile.getHoja("mihoja");
-      // ExcelFile.setCabecera(arrayHeaderTmp);
+      ExcelFile.crearLibro("stream", "mensajes.xlsx");
+   
+       ExcelFile.crearHoja("mihoja");
+       ExcelFile.getHoja("mihoja");
+       ExcelFile.setCabecera(arrayHeaderTmp);
       let i = 0;
       aDatosFinal.forEach(e => {
         console.log(e.toString());
-        // ExcelFile.dataControl(e, i, iRowsAffec);
+         ExcelFile.dataControl(e, i, iRowsAffec);
         i++;
         if (i == iRowsAffec) {
           reloj.timeStop();
