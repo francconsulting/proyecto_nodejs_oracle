@@ -37,7 +37,7 @@ var paramsSql = null //{ distri: "CZZ", bv: 250 }; //parametros para la consulta
 
 var configExcel = {
   tipo: "stream",
-  name_wb: "tdcs_vivos.xlsx",
+  name_wb: "tdcs_vivos_node.xlsx",
   name_ws: "tdc"
 };
 
