@@ -65,19 +65,7 @@ var json2row = fileName => {
         // toExcel(element)
 
         element.forEach(e => {
-          i++;/**
-          * ejecutar siempre esto en la ventana donde se inicia node
-          *  export LD_LIBRARY_PATH=/opt/oracle/instantclient:$LD_LIBRARY_PATH
-          *
-          * parta ejecutar manualmente con aumento de memoria de nodejs necesario para
-          * que corra de forma correcta la api:
-          *      node tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192
-          *
-          * Para ejecutarlo automaticamente, se ha introducido en el package.json la
-          * linea "dev" en escript. Se debe ejecutar el siguiente comando:
-          *      npm run dev
-          *
-          */
+          i++;
           arrayData.push(e);
         });
       });

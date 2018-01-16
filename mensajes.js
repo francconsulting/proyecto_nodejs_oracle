@@ -65,19 +65,7 @@ var json2row = fileName => {
         // toExcel(element)
 
         element.forEach(e => {
-          i++;/**
-          * ejecutar siempre esto en la ventana donde se inicia node
-          *  export LD_LIBRARY_PATH=/opt/oracle/instantclient:$LD_LIBRARY_PATH
-          *
-          * parta ejecutar manualmente con aumento de memoria de nodejs necesario para
-          * que corra de forma correcta la api:
-          *      node tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192
-          *
-          * Para ejecutarlo automaticamente, se ha introducido en el package.json la
-          * linea "dev" en escript. Se debe ejecutar el siguiente comando:
-          *      npm run dev
-          *
-          */
+          i++;
           arrayData.push(e);
         });
       });
@@ -188,15 +176,11 @@ var tdcs = (err, conn) => {
             aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
             break;
           default:
-            console.log(">>>>>>>>>>>>>>>>>", e[22]);
             aMensajesTmp[0] = Null;
         }
-        aMensajesTmp[13] = "=T"+i + "+D"+i
-        aMensajesTmp[15] =
-          '"=IF(AND(RC[-19]<>""B1"",RC[-28]=""Rejected""),IF(RC[-11]="""",""FALTA_04"",""""),"""")"';
-        //aDatosAnt[19] = aMensajesTmp
+        
         //  console.log( sCupsAnt," ",sSolAnt," ------#-----",aDatosAnt.toString()," ----",aMensajesTmp.toString()," <");
-        i++;
+        i++;aMensajesTmp.fill(null, 0, 13);
         if (i == data.length) {
           reloj.timeStop();
         }
@@ -246,7 +230,6 @@ var tdcs = (err, conn) => {
       //ExcelFile.getHoja("Hoja1");
       iRowsAffec = aDatosFinal.length;
       ExcelFile.crearLibro("stream", "mensajes.xlsx");
-      ExcelFile.crearHoja("hojita1");
       ExcelFile.crearHoja("mihoja");
       ExcelFile.getHoja("mihoja");
       ExcelFile.setCabecera(arrayHeaderTmp);
