@@ -25,10 +25,15 @@ ExcelFile.crearLibro = (tipo, nombreArchivo) => {
   wb.created = new Date(); //fecha creacion
 };
 
+ExcelFile.crearHoja = nombreHoja => {
+  var nameSheet = nombreHoja || "hoja 1";
+  wb.addWorksheet(nameSheet);
+};
+
 ExcelFile.setWB = () => {
   var wb = new Excel.Workbook();
   return wb;
-}
+};
 
 ExcelFile.getLibro = nombreArchivo => {
   var wb = new Excel.Workbook();
@@ -111,15 +116,9 @@ ExcelFile.getHojasLibro = dataBook => {
   return aHojas;
 };
 
-ExcelFile.crearHoja = nombreHoja => {
-  var nameSheet = nombreHoja || "hoja 1";
-  wb.addWorksheet(nameSheet);
-};
-
 ExcelFile.getHoja = nombreHoja => {
-  return ws = wb.getWorksheet(nombreHoja);
+  return (ws = wb.getWorksheet(nombreHoja));
 };
-
 
 ExcelFile.setCabecera = arrayCabecera => {
   ws.columns = arrayCabecera;
@@ -144,11 +143,10 @@ ExcelFile.setCabeceraFromArray = arrayCabecera => {
 ExcelFile.addRow = data => {
   ws.addRow(data).commit();
 };
-ExcelFile.getLastRow = (ws) =>{
-  console.log(ws.lastRow)
-  return ws.lastRow
-}
-
+ExcelFile.getLastRow = ws => {
+  console.log(ws.lastRow);
+  return ws.lastRow;
+};
 
 ExcelFile.wsClose = () => {
   ws.commit();
@@ -179,6 +177,7 @@ ExcelFile.dataControl = (data, nfila, nFilas) => {
   console.log("guardando....", percent, "% ", nfila + 1, "de", nFilas);
   //}
   ExcelFile.addRow(data);
+  console.log("dataContol: ", nfila);
   if (nfila + 1 == nFilas) {
     ExcelFile.wsClose();
     ExcelFile.wbClose();
