@@ -110,18 +110,21 @@ var tdcs = (err, conn) => {
   reloj.timeStart();
 
   var wb = ExcelFile.setWB ()
-  wb.xlsx.readFile('mensajes.xlsx').then( ()=> {
+  
+  wb.xlsx.readFile('miLibroOpenofice.xlsx').then( ()=> {
     
     let ws = wb.getWorksheet(1);
+
     let lastRow = ws.lastRow
-    console.log(lastRow.number)
+    //console.log(lastRow.number)
     ws.addRow([3,"SAM",new Date()]).commit()
-    ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
-    wb.xlsx.writeFile('mensajes.xlsx').then(
-     reloj.timeStop()
+    //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
+
+    wb.xlsx.writeFile('miLibroOpenofice.xlsx').then( 
+        reloj.timeStop()
     )
   })
-  
+ 
 };
 
 //conectar(tdcs);

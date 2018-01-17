@@ -66,15 +66,12 @@ var tdcs = (err, conn) => {
       .then(() => {*/
       ConnBd.getAllRows(conn, results, numRows)
         .then(data => {
-          data.arrayData.forEach(element => {
+          data.arrayData.forEach(element => { //añadir los elemento de cada bloque de registros a un array
             element.forEach(element => {
               arrayData.push(element);
             });
           });
-          //arrayData = data.arrayData;
           iRowsAffec = data.iRowsAffec;
-         // console.log(data.iRowsAffec);
-          //  rows2json("mensajes.json", arrayData);
           return arrayData;
         })
         .then(arrayData => {
@@ -86,14 +83,13 @@ var tdcs = (err, conn) => {
             aMensajesTmp = [],
             aDatosFinal = [];
           aMensajesTmp.fill(null, 0, 13);
-          console.log(arrayData);
           arrayData.forEach(e => {
             //cuando se cambia a un cups y solicitud distinto
             if (sCupsSolAnt != e[1] + "-" + e[2] && sCupsSolAnt != "") {
-              //console.log(e[1]," ",e[2]," -----------",aDatosAnt.concat(aMensajesTmp)," ----",aMensajesTmp.toString(),            "       ",            sCupsSolAnt          );
+                          //console.log(e[1]," ",e[2]," -----------",aDatosAnt.concat(aMensajesTmp)," ----",aMensajesTmp.toString(),            "       ",            sCupsSolAnt          );
               aMensajesTmp.shift(); //eliminar el primer elemento
               aDatosFinal.push(aDatosAnt.concat(aMensajesTmp)); //concatenar datos y añadir al array de datos final
-              aDatosAnt = [];
+              aDatosAnt = []; //inicializar el array
               aMensajesTmp.fill(null, 0, 13); //poner todos los valores del array a null
             }
             sCupsSolAnt = e[1] + "-" + e[2];
@@ -101,8 +97,6 @@ var tdcs = (err, conn) => {
             sSolAnt = e[2];
             e[0] = e[1] + "-" + e[2];
             aDatosAnt = e.slice(0, 19); //todo crear un nuevo array con solo algunos elementos
-            // aMensajesTmp.push(e[22])
-            // aMensajesTmp.sort()
 
             //rellenar el array de mensajes de la solicitud
             switch (e[22]) {
@@ -143,20 +137,22 @@ var tdcs = (err, conn) => {
                 aMensajesTmp[parseInt(e[22])] = parseInt(e[22]);
                 break;
               default:
-                aMensajesTmp[0] = null;
+                aMensajesTmp[0] = null; //vacial la primera posicion
             }
 
             //  console.log( sCupsAnt," ",sSolAnt," ------#-----",aDatosAnt.toString()," ----",aMensajesTmp.toString()," <");
             i++;
             if (i == arrayData.length) {
-              reloj.timeStop();
+             // reloj.timeStop();
             }
           });
           aMensajesTmp.shift(); //eliminar el primer elemento del array
           aDatosFinal.push(aDatosAnt.concat(aMensajesTmp));
           return aDatosFinal;
         })
+        //crear un libro nuevo y escribir en una hoja nueva
         .then(aDatosFinal => {
+          
           let aCabeceraTmp = [
             "Id",
             "CUPS",
@@ -191,12 +187,11 @@ var tdcs = (err, conn) => {
             "PASO12"
           ];
           let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
-          console.log("fin");
-          //console.log(configExcel);
+
           mensaje = "Iniciando el proceso de creación de fichero xlsx....";
           reloj.setMensaje(mensaje);
-          reloj.timeStart();
-          ExcelFile.crearLibro("stream", configExcel.name_wb);
+          
+          /*ExcelFile.crearLibro("stream", configExcel.name_wb);
           ExcelFile.crearHoja(configExcel.name_ws);
           ExcelFile.getHoja(configExcel.name_ws);
           ExcelFile.setCabecera(arrayHeaderTmp);
@@ -209,7 +204,26 @@ var tdcs = (err, conn) => {
             if (i == iRowsAffec) {
               reloj.timeStop();
             }
-          });
+          });      */ 
+          return {cabecera: aCabeceraTmp, datos:aDatosFinal}
+        })
+        //leer un libro existente y escribir en una hoja
+        .then( (data) => {
+                        var wb = ExcelFile.setWB ()
+                
+                wb.xlsx.readFile('miLibroOpenofice.xlsx').then( ()=> {
+                  
+                  let ws = wb.getWorksheet(1);
+
+                  let lastRow = ws.lastRow
+                  //console.log(lastRow.number)
+                  ws.addRow([3,"SAM",new Date()]).commit()
+                  //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
+
+                  wb.xlsx.writeFile('miLibroOpenofice.xlsx').then( 
+                      reloj.timeStop()
+                  )
+                })
         });
       /*  });*/
     })
@@ -217,7 +231,5 @@ var tdcs = (err, conn) => {
       console.log(e);
     });
 };
-
-//conectar(tdcs);
 
 ConnBd.open(tdcs);
