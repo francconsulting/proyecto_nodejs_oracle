@@ -218,6 +218,7 @@ var tdcs = (err, conn) => {
                   let lastRow = ws.lastRow
                   //console.log(lastRow.number)
                   ws.addRow([3,"SAM",new Date()]).commit()
+                  ws.addRow(data.cabecera).commit()
                   //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
 
                   wb.xlsx.writeFile('miLibroOpenofice.xlsx').then( 
