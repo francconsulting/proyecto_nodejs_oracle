@@ -73,7 +73,7 @@ var tdcs = (err, conn) => {
           });
           //arrayData = data.arrayData;
           iRowsAffec = data.iRowsAffec;
-          console.log(data.iRowsAffec);
+         // console.log(data.iRowsAffec);
           //  rows2json("mensajes.json", arrayData);
           return arrayData;
         })
@@ -148,7 +148,6 @@ var tdcs = (err, conn) => {
 
             //  console.log( sCupsAnt," ",sSolAnt," ------#-----",aDatosAnt.toString()," ----",aMensajesTmp.toString()," <");
             i++;
-            aMensajesTmp.fill(null, 0, 13);
             if (i == arrayData.length) {
               reloj.timeStop();
             }
@@ -194,16 +193,19 @@ var tdcs = (err, conn) => {
           let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
           console.log("fin");
           //console.log(configExcel);
+          mensaje = "Iniciando el proceso de creación de fichero xlsx....";
+          reloj.setMensaje(mensaje);
+          reloj.timeStart();
           ExcelFile.crearLibro("stream", configExcel.name_wb);
           ExcelFile.crearHoja(configExcel.name_ws);
           ExcelFile.getHoja(configExcel.name_ws);
           ExcelFile.setCabecera(arrayHeaderTmp);
-
+          iRowsAffec = aDatosFinal.length
          let i = 0;
           aDatosFinal.forEach(e => {
             ExcelFile.dataControl(e, i, iRowsAffec);
             i++;
-            console.log(i, " ", iRowsAffec, " tamaño aDatosFinal: ",aDatosFinal.length);
+            //console.log(i, " ", iRowsAffec, " tamaño aDatosFinal: ",aDatosFinal.length);
             if (i == iRowsAffec) {
               reloj.timeStop();
             }
