@@ -205,26 +205,42 @@ var tdcs = (err, conn) => {
               reloj.timeStop();
             }
           });      */ 
+          
+          
+          var wb = ExcelFile.setWB ()
+                
+          wb.xlsx.readFile('mensajes.xlsx').then( ()=> {
+            wb.removeWorksheet(2)
+            wb.removeWorksheet(3)
+            wb.addWorksheet('HojaNueva2');
+            let ws = wb.getWorksheet(2);
+
+            let lastRow = ws.lastRow
+            //console.log(lastRow.number)
+            ws.addRow(aCabeceraTmp).commit()
+            aDatosFinal.forEach(element => {
+              ws.addRow(element).commit()
+            });
+            ws.addRow([3,"SAMiiixxxxxxxxx",new Date()]).commit()
+            
+            for (let x = 0; x < aDatosFinal.length; x++) {
+              ws.getRow(x+2).getCell(32).value = {formula: 'A1+B1', result:'VERDADERO'}
+              
+            }
+            32
+            //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
+
+            wb.xlsx.writeFile('mensajes.xlsx').then( 
+                reloj.timeStop()
+            )
+          })
+          
+
           return {cabecera: aCabeceraTmp, datos:aDatosFinal}
         })
         //leer un libro existente y escribir en una hoja
         .then( (data) => {
-                        var wb = ExcelFile.setWB ()
                 
-                wb.xlsx.readFile('miLibroOpenofice.xlsx').then( ()=> {
-                  
-                  let ws = wb.getWorksheet(1);
-
-                  let lastRow = ws.lastRow
-                  //console.log(lastRow.number)
-                  ws.addRow([3,"SAM",new Date()]).commit()
-                  ws.addRow(data.cabecera).commit()
-                  //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
-
-                  wb.xlsx.writeFile('miLibroOpenofice.xlsx').then( 
-                      reloj.timeStop()
-                  )
-                })
         });
       /*  });*/
     })
@@ -233,4 +249,25 @@ var tdcs = (err, conn) => {
     });
 };
 
+
+var escribirEnExcel = () => {
+  var wb = ExcelFile.setWB ()
+                
+                wb.xlsx.readFile('mensajes.xlsx').then( ()=> {
+                  //wb.removeWorksheet(2)
+                  //wb.addWorksheet('HojaNueva2');
+                  let ws = wb.getWorksheet(1);
+
+                  let lastRow = ws.lastRow
+                  //console.log(lastRow.number)
+                  //ws.addRow(data.cabecera).commit()
+                  ws.addRow([3,"SAMiiiiii",new Date()]).commit()
+                  //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
+
+                  wb.xlsx.writeFile('mensajes.xlsx').then( 
+                      reloj.timeStop()
+                  )
+                })
+}
+//escribirEnExcel();
 ConnBd.open(tdcs);
