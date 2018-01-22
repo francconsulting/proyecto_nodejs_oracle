@@ -227,7 +227,7 @@ var tdcs = (err, conn) => {
               ws.getRow(x+2).getCell(32).value = {formula: 'A1+B1', result:'VERDADERO'}
               
             }
-            32
+            
             //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
 
             wb.xlsx.writeFile('mensajes.xlsx').then( 
@@ -256,18 +256,18 @@ var escribirEnExcel = () => {
                 wb.xlsx.readFile('mensajes.xlsx').then( ()=> {
                   //wb.removeWorksheet(2)
                   //wb.addWorksheet('HojaNueva2');
-                  let ws = wb.getWorksheet(1);
+                  let ws = wb.getWorksheet(2);
 
                   let lastRow = ws.lastRow
                   //console.log(lastRow.number)
                   //ws.addRow(data.cabecera).commit()
                   ws.addRow([3,"SAMiiiiii",new Date()]).commit()
-                  //ws.getRow(4538).getCell(4).value = {formula: 'D3 + D2', value :'10'}
-
-                  wb.xlsx.writeFile('mensajes.xlsx').then( 
+                  ws.getRow(2).getCell(4).value  = 556
+                  wb.getWorksheet(1);
+                  wb.xlsx.writeFile('mensajes1.xlsx').then( 
                       reloj.timeStop()
                   )
                 })
 }
-//escribirEnExcel();
-ConnBd.open(tdcs);
+escribirEnExcel();
+//ConnBd.open(tdcs);
