@@ -23,21 +23,20 @@ var //oracledb = require("oracledb"),
   arrayHeader = [],
   arrayData = [],
   ssql,
-  AppModel = () => {},
-  rest;
+  AppModel = () => {
+
+  }
 
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 
-AppModel.getTdcVivos = () => {
+AppModel.getTdcVivos = ( callback) => {
     fs.readFile("./querys/instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
         ssql = data;
       });
-      /*fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
-        ssql = data;
-      });*/
+
       
-      var paramsSql = { distri: "CZZ", rowlimit: 100 }; //parametros para la consulta
+      var paramsSql = { distri: "CZZ", rowlimit: 100000 }; //parametros para la consulta
       
       var configExcel = {
         tipo: "stream",
@@ -71,7 +70,7 @@ AppModel.getTdcVivos = () => {
                     .then(() => {
                      // console.log("fin");
                      // console.log(configExcel);
-                      ExcelFile.crearLibro("stream", configExcel.name_wb);
+                     ExcelFile.crearLibro("stream", configExcel.name_wb);
                       ExcelFile.crearHoja(configExcel.name_ws);
                       ExcelFile.getHoja(configExcel.name_ws);
                       ExcelFile.setCabecera(arrayHeader);
@@ -85,8 +84,10 @@ AppModel.getTdcVivos = () => {
                             reloj.timeStop();
                           }
                         });
+                       
                       });
-                      return arrayData
+                      //return arrayData
+                      callback(arrayData)
                     });
                 });
             })
@@ -95,6 +96,7 @@ AppModel.getTdcVivos = () => {
             });
 
     });
+  
 
 }
 

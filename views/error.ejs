@@ -1,0 +1,15 @@
+<%= JSON.stringify(locals)%>
+<% include header.ejs %>
+<article class="container">
+	<div class="item center">
+		<h1><%= title %></h1>
+		<h2>Estado de Error: <%= error.status%>.-<%= desc%></h2>
+		<pre class="error left">
+			<code> <%=error.stack%></code> 
+		</pre>
+		<h3>
+			<a href="/">Volver</a>
+		</h3>
+	</div>
+</article>
+<% include footer.ejs %>

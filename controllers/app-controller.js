@@ -89,11 +89,39 @@ AppController.errCrud = (err, res) => {
 
 
 AppController.getTdcVivos = (req, res, next) => {
-    AppModel.getTdcVivos((err, results) => {
-      console.log('sssssssssssssssssssssssssssssssss')
+    AppModel.getTdcVivos( (results) => {
+       // if (AppController.errCrud(err, res)) return
+        console.log('hola')
+      
+       let html = '', i = 1;
+      // console.log(results)
+        html = "<table style='border:1px solid'>"
+        results.forEach(element => {
+           // html +='<p>##'+element+'##</br></br></p>'
+          
+            element.forEach(e => {
+                html += "<tr><td>"
+                html +=i++ +" - " +e[2]
+                html +="</td></tr>"
+            });
+            
+          });
+          html += "</table>"
+          res.writeHead(200, {'Content-Type' : 'text/html'})
+          res.end(html);
     })
+  
 }
-
+/*AppController.getTdcVivos = (req, res, next) => {
+    AppModel.getTdcVivos( (results) => {
+        let locals = {
+            title: 'Lista de peliculas',
+            data: results[0]
+        }
+      res.render('index', locals)
+    })
+  
+}*/
 
 
 

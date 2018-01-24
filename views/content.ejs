@@ -1,0 +1,55 @@
+<section class="container">
+	<div class="item logo">
+	
+	</div>
+	<div class="item">
+		<h1>
+			<a href="/"><%= title %></a>
+		</h1>
+	</div>
+	<article class="item">
+		<% if (!data.length) { %>
+		<p class="error">NO Hay datos</p>
+		<%} else {%>
+			<table class="table">
+				<caption>Pelis</caption>
+				<thead>
+					<tr>
+						<th>Territorio</th>
+						<th>Cemptitu</th>
+						<th>Solicitud</th>
+						<th>cod_interno</th>
+						<th>Poster</th>
+						<th colspan="2">
+							<form  method="GET" action="/agregar" accept-charset="utf-8">
+								<input type="submit" value="Agregar" class="boton add">
+							</form>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% data.forEach( function(datos) {%>
+						<tr>
+							<td><%=datos[0]%></td>
+							<td><%=datos[1]%></td>
+							<td><%=datos[2]%></td>
+							<td><%=datos[3]%></td>
+							<td><img src="<%=datos.image%>" alt="<%="titulo: " + datos.title%>" ></td>
+							<td>
+								<form method="GET" action="/editar/<%=datos[0]%>"  accept-charset="utf-8">
+								<input type="submit" value="Editar" class="boton edit">
+							</form>
+							</td>
+							<td>
+								<form method="POST" action="/eliminar/<%=datos[0]%>"  accept-charset="utf-8">
+								<input type="button" id="btnEliminar" value="Eliminar" class="boton delete">
+							</form>
+							</td>
+							</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		<%}%>
+	</article>
+</section>
+<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
