@@ -86,6 +86,7 @@ AppController.errCrud = (err, res) => {
 };
 
 AppController.getTdcVivos = (req, res, next) => {
+
   AppModel.getTdcVivos(results => {
     //if (AppController.errCrud(err, res)) return;
     console.log("hola");
@@ -105,7 +106,7 @@ AppController.getTdcVivos = (req, res, next) => {
     });
     html += "</table>";
     //res.writeHead(200, { "Content-Type": "text/html" });
-    res.send(html); 
+   // res.send(html); 
   });
 };
 /*AppController.getTdcVivos = (req, res, next) => {

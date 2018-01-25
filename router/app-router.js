@@ -2,6 +2,7 @@
 
 var AppController = require('../controllers/app-controller'),
     express = require('express'),
+    path = require('path'),
     router = express.Router()
 /**
  * LA FUNCTION TPL NO LA VAMOS A USAR
@@ -11,18 +12,19 @@ var AppController = require('../controllers/app-controller'),
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-
-
-
-
+    var ruta = `${process.cwd()}/views/`
 
 
 router
     .get('/', function (req, res){
         res.send("hola")
     })
-    .get('/tdc', AppController.getTdcVivos)
- 
+    .get('/tdc', function (req, res) {
+console.log(`${process.cwd()}`)
+res.sendFile(ruta +'index.html')      
+//res.sendFile(path.join(__dirname, '../views', 'index.html'));
+        AppController.getTdcVivos()
+    } )
     /*
     .get('/', PelisController.getAll)
     .get('/agregar', PelisController.addForm)
