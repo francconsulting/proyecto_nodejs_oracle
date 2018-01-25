@@ -22,19 +22,22 @@ var //oracledb = require("oracledb"),
   iRowsAffec = 0, //registros recuperados
   arrayHeader = [],
   arrayData = [],
-  ssql;
+  ssql,
+  filepath = "./descargas/";
 
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 fs.readFile("consulta TDC vivos.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
 });
+var paramsSql = null; //parametros para la consulta
+
 /*fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
-});*/
+});
 
-var paramsSql = null //{ distri: "CZZ", bv: 250 }; //parametros para la consulta
-
+var paramsSql = { distri: "CZZ", numrows: 250 }; //parametros para la consulta
+*/
 var configExcel = {
   tipo: "stream",
   name_wb: "tdcs_vivos_node.xlsx",
@@ -67,7 +70,7 @@ var tdcs = (err, conn) => {
             .then(() => {
               console.log("fin");
               console.log(configExcel);
-              ExcelFile.crearLibro("stream", configExcel.name_wb);
+              ExcelFile.crearLibro("stream", filepath + configExcel.name_wb);
               ExcelFile.crearHoja(configExcel.name_ws);
               ExcelFile.getHoja(configExcel.name_ws);
               ExcelFile.setCabecera(arrayHeader);

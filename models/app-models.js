@@ -23,83 +23,87 @@ var //oracledb = require("oracledb"),
   arrayHeader = [],
   arrayData = [],
   ssql,
-  AppModel = () => {
-
-  }
+  AppModel = () => {};
 
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
+AppModel.getTdcVivos = callback => {
+  /* fs.readFile(
+    "./querys/instruccion_sql.sql",
+    { encoding: "utf-8" },
+    (err, data) => {
+      ssql = data;
+    }
+  );
 
-AppModel.getTdcVivos = ( callback) => {
-    fs.readFile("./querys/instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
-        ssql = data;
-      });
+  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
+*/
+  fs.readFile(
+    "./querys/consulta TDC vivos.sql",
+    { encoding: "utf-8" },
+    (err, data) => {
+      ssql = data;
+    }
+  );
 
-      
-      var paramsSql = { distri: "CZZ", rowlimit: 100000 }; //parametros para la consulta
-      
-      var configExcel = {
-        tipo: "stream",
-        name_wb: "tdcs_vivos_node.xlsx",
-        name_ws: "tdc"
-      };
-    
-     ConnBd.open( (err, conn) => {
-        if (err) {
-            console.log("Error en la conexion");
-            return;
-          }
-          mensaje = "Conectado. Esperando a ejecutar la consulta.....";
-          reloj.setMensaje(mensaje);
-        //  reloj.timeStart();
-          
-        ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
-            .then(results => {
-              ConnBd.getCabecera(conn, results)
-                .then(data => {
-                  arrayHeader = data;
-                  //console.log(data);
-                })
-                .then(() => {
-                  ConnBd.getAllRows(conn, results, numRows)
-                    .then(data => {
-                      arrayData = data.arrayData;
-                      iRowsAffec = data.iRowsAffec;
-                      console.log(data.iRowsAffec);
-                    })
-                    .then(() => {
-                     // console.log("fin");
-                     // console.log(configExcel);
-                     ExcelFile.crearLibro("stream", configExcel.name_wb);
-                      ExcelFile.crearHoja(configExcel.name_ws);
-                      ExcelFile.getHoja(configExcel.name_ws);
-                      ExcelFile.setCabecera(arrayHeader);
-        
-                      let i = 0;
-                      arrayData.forEach(element => {
-                        element.forEach(e => {
-                          ExcelFile.dataControl(e, i, iRowsAffec);
-                          i++;
-                          if (i == iRowsAffec) {
-                            reloj.timeStop();
-                          }
-                        });
-                       
-                      });
-                      //return arrayData
-                      callback(arrayData)
-                    });
+  var paramsSql = null; //parametros para la consulta
+
+  var configExcel = {
+    tipo: "stream",
+    name_wb: "tdcs_vivos_node.xlsx",
+    name_ws: "tdc"
+  };
+
+  ConnBd.open((err, conn) => {
+    if (err) {
+      console.log("Error en la conexion");
+      return;
+    }
+    mensaje = "Conectado. Esperando a ejecutar la consulta.....";
+    reloj.setMensaje(mensaje);
+    //  reloj.timeStart();
+
+    ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
+      .then(results => {
+        ConnBd.getCabecera(conn, results)
+          .then(data => {
+            arrayHeader = data;
+            //console.log(data);
+          })
+          .then(() => {
+            ConnBd.getAllRows(conn, results, numRows)
+              .then(data => {
+                arrayData = data.arrayData;
+                iRowsAffec = data.iRowsAffec;
+                console.log(data.iRowsAffec);
+              })
+              .then(() => {
+                // console.log("fin");
+                // console.log(configExcel);
+                ExcelFile.crearLibro("stream", configExcel.name_wb);
+                ExcelFile.crearHoja(configExcel.name_ws);
+                ExcelFile.getHoja(configExcel.name_ws);
+                ExcelFile.setCabecera(arrayHeader);
+
+                let i = 0;
+                arrayData.forEach(element => {
+                  element.forEach(e => {
+                    ExcelFile.dataControl(e, i, iRowsAffec);
+                    i++;
+                    if (i == iRowsAffec) {
+                      reloj.timeStop();
+                    }
+                  });
                 });
-            })
-            .catch(e => {
-              console.log(e);
-            });
+                //return arrayData
+                callback(arrayData);
+              });
+          });
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  });
+};
 
-    });
-  
-
-}
-
-
-
-module.exports = AppModel
+module.exports = AppModel;

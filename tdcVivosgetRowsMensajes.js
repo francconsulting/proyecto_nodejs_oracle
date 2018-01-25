@@ -26,7 +26,7 @@ var //oracledb = require("oracledb"),
 
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
-fs.readFile(
+/*fs.readFile(
   "Consulta Solicitudes para mensajes.sql",
   { encoding: "utf-8" },
   (err, data) => {
@@ -34,12 +34,12 @@ fs.readFile(
   }
 );
 var paramsSql = { TIPOSOL: "A3", fecha_desde: "2018-01-01" }; //parametros para la consulta
-
-/*fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
+*/
+fs.readFile("instruccion_sql.sql", { encoding: "utf-8" }, (err, data) => {
   ssql = data;
 });
-var paramsSql = { numrows: 255 };
-*/
+var paramsSql = { distri: "CZZ", rowlimit: 1000 };
+
 var configExcel = {
   tipo: "stream",
   name_wb: "mensajes.xlsx",
@@ -225,19 +225,19 @@ var tdcs = (err, conn) => {
         "PASO12"
       ];
 
-     // let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
-     ExcelFile.getLibro("mensajes.xlsx");
-     ExcelFile.getHoja("miHoja");
+      // let arrayHeaderTmp = ExcelFile.setCabeceraFromArray(aCabeceraTmp);
+      ExcelFile.getLibro("mensajes.xlsx");
+      ExcelFile.getHoja("miHoja");
       iRowsAffec = aDatosFinal.length;
-    //  ExcelFile.crearLibro("stream", "mensajes.xlsx");
-   
-    //   ExcelFile.crearHoja("mihoja");
-    //   ExcelFile.getHoja("mihoja");
-    //   ExcelFile.setCabecera(arrayHeaderTmp);
+      //  ExcelFile.crearLibro("stream", "mensajes.xlsx");
+
+      //   ExcelFile.crearHoja("mihoja");
+      //   ExcelFile.getHoja("mihoja");
+      //   ExcelFile.setCabecera(arrayHeaderTmp);
       let i = 0;
       aDatosFinal.forEach(e => {
-        console.log(e.toString());
-         ExcelFile.dataControl(e, i, iRowsAffec);
+        //console.log(e.toString());
+        ExcelFile.dataControl(e, i, iRowsAffec);
         i++;
         if (i == iRowsAffec) {
           reloj.timeStop();
