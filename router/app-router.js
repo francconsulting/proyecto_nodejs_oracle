@@ -28,8 +28,8 @@ router
   }) // .get('/tpl/:id', tpl)     //ESTA RUTA NO LA VAMOS A USAR
 
   .post("/tdc", function(req, res) {
+    console.log("en post");
     AppController.getTdcVivos();
-    
   })
   /*
     .get('/', PelisController.getAll)
