@@ -29,6 +29,7 @@ router
 
   .post("/tdc", function(req, res) {
     AppController.getTdcVivos();
+    
   })
   /*
     .get('/', PelisController.getAll)
