@@ -129,7 +129,7 @@ function rsClose(conn, results) {
 
 function connClose(conn) {
     conn.close((err) => {
-        if (err) { console.log('Error al cerrar la Conexión') }
+        if (err) { console.log('Error al cerrar la Conexiï¿½n') }
         console.log('conexion Cerrada')
     }
     )
