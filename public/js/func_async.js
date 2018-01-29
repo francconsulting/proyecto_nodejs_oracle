@@ -24,16 +24,19 @@ function callAjax(url, doneFuncion, parametros, tipo, tipoDato) {
     async: true, //[bool que indica sincron�a/asincronia]
     beforeSend: function(result) {
       //antes de enviar la peticion
+      console.log('beforeSEND')
       $("#procesando").html("Procesando, espere por favor..."); //mostramos un mensaje al usuario
       $("#procesando")
         .clearQueue()
         .fadeIn(); //mostramos el mensaje con efecto y eliminando de la cola los elementos no procesados aun
-    }
-    /*success:  function (result) {
+    },
+    success:  function (result) {
+        console.log('success')
            // $("#procesando").fadeOut(1000);     //cuando se realiza la peticion se oculta el mensaje con un efecto
-        }*/
+        }
   })
     .done(function(result) {
+      console.log('done', result)
       //cuando se ejecuta la peticion de forma correcta
       doneFuncion(result); //hacemos la llamada a la funcion calback pasada por parametros para utilizar los datos recuperados
       /*    $("#procesando").fadeOut(1000, function(){
@@ -48,9 +51,9 @@ function callAjax(url, doneFuncion, parametros, tipo, tipoDato) {
         .text(
           "Se ha producido un error:" + jqXHR.status + " " + jqXHR.statusText
         ); //si hay algun error en la llamada muestra un mensaje
-    });
-
-  /* .always(function(jqXHR){  //completada la peticion
-            $("#mensaje").addClass("error").html("Se ha producido un error:" + jqXHR.status+" -> "+smgErr); //si hay algun error en la llamada muestra un mensaje
-        })*/
+    })
+   .always(function(jqXHR){  //completada la peticion
+    console.log('always')
+          // $("#mensaje").addClass("error").html("Se ha producido un error:" + jqXHR.status+" -> "+smgErr); //si hay algun error en la llamada muestra un mensaje
+        });
 }

@@ -27,10 +27,17 @@ router
     // AppController.getTdcVivos();
   }) // .get('/tpl/:id', tpl)     //ESTA RUTA NO LA VAMOS A USAR
 
-  .post("/tdc", function(req, res) {
+  .post("/tdcs", function(req, res) {
     console.log("en post");
-    AppController.getTdcVivos();
+    AppController.getTdcVivos()
+      .then( results =>(
+        res.send(results)
+      ))
+    
   })
+
+
+  
   /*
     .get('/', PelisController.getAll)
     .get('/agregar', PelisController.addForm)
