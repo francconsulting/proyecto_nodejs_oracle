@@ -86,35 +86,33 @@ AppController.errCrud = (err, res) => {
 };
 
 AppController.getTdcVivos = (req, res, next) => {
-
-  return new Promise ( (resolve, reject)=> {
+  let html = "",
+    i = 1;
+  return new Promise((resolve, reject) => {
     AppModel.getTdcVivos(results => {
       //if (AppController.errCrud(err, res)) return;
-     // console.log(JSON.stringify(results));
-  
-      let html = "",
-       i = 1;
-      // console.log(results)
-      html = "<table style='border:1px solid'>";
+      // console.log(JSON.stringify(results));
+
+      html = "<table >";
       results.forEach(element => {
         // html +='<p>##'+element+'##</br></br></p>'
-  
+
+        //console.log(element.length);
         element.forEach(e => {
-          html += "<tr><td>";
-          html += i++ + " - " + e[2] + "  " + e[3];
+          html +=
+            "<tr style='border: solid 1px #000'><td>" + i++ + "</td><td >";
+          html += e[2] + "  " + e[3];
           html += "</td></tr>";
         });
       });
       html += "</table>";
       //res.writeHead(200, { "Content-Type": "text/html" });
-     // res.send(html); 
-      resolve(html)
+      // res.send(html);
+      //  resolve(html)
+      resolve(html);
     });
-
-  })  
-
+  });
 };
-
 
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {
@@ -140,7 +138,5 @@ AppController.error404 = (req, res, next) => {
 
   next();
 };
-
-
 
 module.exports = AppController;

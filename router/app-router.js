@@ -29,15 +29,13 @@ router
 
   .post("/tdcs", function(req, res) {
     console.log("en post");
-    AppController.getTdcVivos()
-      .then( results =>(
-        res.send(results)
-      ))
-    
+
+    AppController.getTdcVivos().then(results => {
+      res.send(results);
+      //console.log(results);
+    });
   })
 
-
-  
   /*
     .get('/', PelisController.getAll)
     .get('/agregar', PelisController.addForm)
