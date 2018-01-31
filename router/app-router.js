@@ -13,7 +13,7 @@ var AppController = require("../controllers/app-controller"),
  * @return {[type]}        [description]
  */
 var ruta = `${process.cwd()}/views/`;
-
+var preventReCall; //variable de control para evitar la rellamada del ajax
 router
   .get("/", function(req, res) {
     res.send("hola");
@@ -29,11 +29,18 @@ router
 
   .post("/tdcs", function(req, res) {
     console.log("en post");
+    // AppController.getTdcVivos();
+    // res.send("iniciando");
 
-    AppController.getTdcVivos().then(results => {
-      res.send(results);
-      //console.log(results);
-    });
+    console.log("request: ", preventReCall);
+    if (!preventReCall) {
+      preventReCall = AppController.getTdcVivos().then(results => {
+        res.send(results);
+        //console.log(results);
+      });
+    }
+    /*AppController.getTdcVivos();
+    res.send("calculando....");*/
   })
 
   /*
