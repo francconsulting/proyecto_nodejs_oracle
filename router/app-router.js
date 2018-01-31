@@ -36,6 +36,8 @@ router
     if (!preventReCall) {
       preventReCall = AppController.getTdcVivos().then(results => {
         res.send(results);
+        preventReCall = null;
+     
         //console.log(results);
       });
     }

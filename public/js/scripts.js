@@ -4,22 +4,6 @@ $(document).ready(function() {
     evt.preventDefault();
     // console.log(evt);
     $("#resultado").html("Iniciando la descarga....");
-<<<<<<< HEAD
-   
-    $(document).ajaxSend(function(evt, jqxhr,opt){
-      console.log(evt)
-      $("#resultado").html('ajaxSend')
-    })
-    $(document).ajaxStart(function(evt, jqxhr,opt){
-      console.log(evt)
-      $("#resultado").html('ajaxStart')
-    })
-    
-    callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
-    .done(function(){$("#resultado").prepend('Desde otro DONE1')})
-    .done(function(){ $("#resultado").append('Desde otro DONE2')})
-=======
->>>>>>> 0879470b9a39c1a2e4ce28dfeb12d506ef53651c
 
     $(document).ajaxSend(function(evt, jqxhr, opt) {
       //console.log(evt);
@@ -30,7 +14,7 @@ $(document).ready(function() {
       $("#resultado").html("ajaxStart");
     });
 
-    callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
+  /*  callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
       .done(function() {
         $("#resultado").prepend("Desde otro DONE");
       })
@@ -66,29 +50,41 @@ $(document).ready(function() {
           alert("Uncaught Error: " + jqXHR.responseText);
         }
       });
-
-    /* var promise = doSomething(); 
+*/
+     var promise = doSomething(); 
     promise.progress(function(prog) { 
       console.log(prog);
-      $("#resultado").prepend('Desde otro DONE: ',prog) 
-    })*/
+      $("#resultado").prepend('Desde otro>>>>> DONE: ',prog) 
+    })
   });
 
   function printTabla(datos) {
     $("#resultado").html(datos);
   }
   $("h1").text("TDC Vivos");
-
+  var fechaHora;
   function doSomething() {
     var dfd = $.Deferred();
     var count = 0;
-    var intervalId = setInterval(function() {
+   /* var intervalId = setInterval(function() {
       // dfd.notify(count++);
-      count > 5 && clearInterval(intervalId);
-    }, 500);
+      fechaHora = new Date();
+      dfd.notify(
+        $("#resultado").html(fechaHora)
+      );
+      count++
+      count > 15 && clearInterval(intervalId);
+    }, 1000);*/
+
+   for (let index = 0; index < 10; index++) {
     dfd.notify(
-      callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
+      $("#resultado").html('hola;')
     );
+     
+   }
+   /* dfd.notify(
+      $("#resultado").html(count)
+    );*/
     return dfd.promise();
   }
 });

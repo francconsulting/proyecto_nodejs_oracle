@@ -36,15 +36,9 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-<<<<<<< HEAD
-  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
-
-  /*fs.readFile(
-=======
   var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
 */
   fs.readFile(
->>>>>>> 0879470b9a39c1a2e4ce28dfeb12d506ef53651c
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
     (err, data) => {
