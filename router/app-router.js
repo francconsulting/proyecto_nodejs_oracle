@@ -44,7 +44,10 @@ router
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
-
+  .post("/prueba", (req, res) => {
+    var registros = AppController.prueba()
+    res.send(registros)
+  })
   /*
     .get('/', PelisController.getAll)
     .get('/agregar', PelisController.addForm)

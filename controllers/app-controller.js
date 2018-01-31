@@ -114,6 +114,11 @@ AppController.getTdcVivos = (req, res, next) => {
   });
 };
 
+AppController.prueba =(req, res, next) => {
+  AppModel.prueba( (results) =>{
+    return results
+  })
+}
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {
         let locals = {

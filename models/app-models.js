@@ -105,5 +105,8 @@ AppModel.getTdcVivos = callback => {
       });
   });
 };
+AppModel.prueba = () =>{
+  return iRowsAffec;
+}
 
 module.exports = AppModel;

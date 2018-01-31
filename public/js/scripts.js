@@ -13,6 +13,9 @@ $(document).ready(function() {
       //console.log(evt);
       $("#resultado").html("ajaxStart");
     });
+    callAjax("http://localhost:3000/prueba", function(data){
+      $("#error").html(data)
+    }, null, "POST","HTML")
 
   /*  callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
       .done(function() {
@@ -61,6 +64,9 @@ $(document).ready(function() {
   function printTabla(datos) {
     $("#resultado").html(datos);
   }
+
+
+
   $("h1").text("TDC Vivos");
   var fechaHora;
   function doSomething() {
