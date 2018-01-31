@@ -15,8 +15,8 @@ $(document).ready(function() {
     })
     
     callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
-    .done(function(){$("#resultado").prepend('Desde otro DONE')})
-    .done(function(){ $("#resultado").append('Desde otro DONE')})
+    .done(function(){$("#resultado").prepend('Desde otro DONE1')})
+    .done(function(){ $("#resultado").append('Desde otro DONE2')})
 
 
 
