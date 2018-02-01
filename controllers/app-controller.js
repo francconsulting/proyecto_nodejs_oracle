@@ -114,10 +114,13 @@ AppController.getTdcVivos = (req, res, next) => {
   });
 };
 
-AppController.prueba =(req, res, next) => {
-  AppModel.prueba( (results) =>{
-    return results
-  })
+AppController.getTdcVivosPrueba = () =>{
+  AppModel.getTdcVivos()
+}
+AppController.prueba = (req, res, next) => {
+ var registros = AppModel.prueba()
+ console.log (registros)
+  return registros+''
 }
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {

@@ -20,6 +20,7 @@ var //oracledb = require("oracledb"),
   reloj = require("../commonjs/reloj"),
   numRows = 300, //paquete de registros a recibir
   iRowsAffec = 0, //registros recuperados
+  iRowsAffecTmp = 0,
   arrayHeader = [],
   arrayData = [],
   ssql,
@@ -28,7 +29,7 @@ var //oracledb = require("oracledb"),
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
-  /* fs.readFile(
+/*   fs.readFile(
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -36,7 +37,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
 */
   fs.readFile(
     "./querys/consulta TDC vivos.sql",
@@ -62,7 +63,6 @@ AppModel.getTdcVivos = callback => {
     mensaje = "Conectado. Esperando a ejecutar la consulta.....";
     reloj.setMensaje(mensaje);
     //  reloj.timeStart();
-
     ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
       .then(results => {
         ConnBd.getCabecera(conn, results)
@@ -71,11 +71,17 @@ AppModel.getTdcVivos = callback => {
             //console.log(data);
           })
           .then(() => {
+            iRowsAffecTmp = ConnBd.setResetRowsAffec()
+            setInterval(function(){
+              iRowsAffecTmp = ConnBd.getRowsAffec()
+              
+            }, 1000)
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
                 iRowsAffec = data.iRowsAffec;
                 console.log(data.iRowsAffec);
+                
               })
               .then(() => {
                 // console.log("fin");
@@ -106,7 +112,8 @@ AppModel.getTdcVivos = callback => {
   });
 };
 AppModel.prueba = () =>{
-  return iRowsAffec;
+  console.log(iRowsAffecTmp)
+  return iRowsAffecTmp;
 }
 
 module.exports = AppModel;

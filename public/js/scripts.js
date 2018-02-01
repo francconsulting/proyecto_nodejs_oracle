@@ -13,15 +13,22 @@ $(document).ready(function() {
       //console.log(evt);
       $("#resultado").html("ajaxStart");
     });
-    callAjax("http://localhost:3000/prueba", function(data){
-      $("#error").html(data)
-    }, null, "POST","HTML")
-
-  /*  callAjax("http://localhost:3000/tdcs", printTabla, null, "post", "html")
+    var intervalId = setInterval(function() {
+      callAjax("http://localhost:3001/prueba", function(data){
+        console.log(data)
+        //callAjax("http://localhost:3001/tdcs")
+        if (data!= 'undefined'){ data =  data } else{data = 0}
+        $("#error").html('Recibidos hasta ahora.... '+data+' registros.')
+      }, null, "POST","HTML")
+      
+    },1000);
+  
+    callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
         $("#resultado").prepend("Desde otro DONE");
       })
       .done(function() {
+        clearInterval(intervalId);
         $("#resultado").append("Desde otro DONE");
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
@@ -53,7 +60,8 @@ $(document).ready(function() {
           alert("Uncaught Error: " + jqXHR.responseText);
         }
       });
-*/
+     
+
      var promise = doSomething(); 
     promise.progress(function(prog) { 
       console.log(prog);
@@ -64,7 +72,6 @@ $(document).ready(function() {
   function printTabla(datos) {
     $("#resultado").html(datos);
   }
-
 
 
   $("h1").text("TDC Vivos");

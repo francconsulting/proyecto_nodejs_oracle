@@ -44,9 +44,15 @@ router
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
+  .post("/prueba2", (req, res) => {
+    AppController.getTdcVivosPrueba()
+  })
   .post("/prueba", (req, res) => {
+
+    //AppController.getTdcVivosPrueba()
     var registros = AppController.prueba()
-    res.send(registros)
+    console.log(registros)
+    res.end(registros)
   })
   /*
     .get('/', PelisController.getAll)
