@@ -119,12 +119,18 @@ AppController.getTdcVivosPrueba = () =>{
   AppModel.getTdcVivos()
 }
 AppController.prueba = (req, res, next) => {
- var registros = {'registros':AppModel.prueba(), 'datos':AppModel.getDataTmp()}
+ //var registros = {'registros':AppModel.prueba(), 'datos':AppModel.getDataTmp()} //TODO MOSTRAR datos  en pantalla
+ var registros = {'registros':AppModel.prueba(), 'datos':''}
  //registros = AppModel.prueba()
  //registros = JSON.stringify(AppModel.getDataTmp())
  //console.log (registros)
   return JSON.stringify(registros)
 }
+AppController.getArrayData = () => {
+  return AppModel.getArrayData();
+  //return AppModel.getDataTmp();
+}
+
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {
         let locals = {

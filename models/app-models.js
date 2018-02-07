@@ -37,7 +37,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 5000}; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 50}; //parametros para la consulta
 
 /*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
@@ -81,12 +81,12 @@ AppModel.getTdcVivos = callback => {
                 arrayData = data.arrayData;
                 iRowsAffec = data.iRowsAffec;
                 console.log(data.iRowsAffec);
-                
+                reloj.timeStop();
               })
               .then(() => {
                 // console.log("fin");
                 // console.log(configExcel);
-                ExcelFile.crearLibro("stream", configExcel.name_wb);
+              /*  ExcelFile.crearLibro("stream", configExcel.name_wb);
                 ExcelFile.crearHoja(configExcel.name_ws);
                 ExcelFile.getHoja(configExcel.name_ws);
                 ExcelFile.setCabecera(arrayHeader);
@@ -100,8 +100,9 @@ AppModel.getTdcVivos = callback => {
                       reloj.timeStop();
                     }
                   });
-                });
+                });*/
                 //return arrayData
+                reloj.timeStop();
                 callback(arrayData);
               });
           });
@@ -118,5 +119,9 @@ AppModel.prueba = () =>{
 
 AppModel.getDataTmp = () => {
   return ConnBd.getDatos();
+}
+
+AppModel.getArrayData = () => {
+  return arrayData;
 }
 module.exports = AppModel;

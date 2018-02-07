@@ -34,9 +34,8 @@ router
 
     console.log("request: ", preventReCall);
    // if (!preventReCall) {
-      preventReCall = AppController.getTdcVivos().then(results => {
+      preventReCall = AppController.getTdcVivos().then( results => {
        // console.log(results)
-      
         res.send(results);
        
         preventReCall = null;
@@ -50,21 +49,29 @@ router
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
+  .post('/datos', (req, res) => {
+      var datos = null 
+      datos = AppController.getArrayData()
+      res.send(datos);
+  })
   .post("/prueba2", (req, res) => {
    // if (!preventReCall) {
       AppController.getTdcVivos()
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>1")
+      //res.end()
       preventReCall = null;
-  
+      
 
   //  }
       
   })
   .post("/prueba", (req, res) => {
-
+   
     //AppController.getTdcVivosPrueba()
     var registros = AppController.prueba()
    // console.log(registros)
-    res.end(registros)
+   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>2")
+    res.send(registros)
   })
   /*
     .get('/', PelisController.getAll)
