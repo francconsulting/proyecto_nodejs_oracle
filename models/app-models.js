@@ -29,7 +29,7 @@ var //oracledb = require("oracledb"),
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
-/*   fs.readFile(
+   fs.readFile(
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -37,9 +37,9 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
-*/
-  fs.readFile(
+  var paramsSql = { distri: "CZZ", rowlimit: 5000}; //parametros para la consulta
+
+/*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -48,7 +48,7 @@ AppModel.getTdcVivos = callback => {
   );
 
   var paramsSql = null; //parametros para la consulta
-
+*/
   var configExcel = {
     tipo: "stream",
     name_wb: "tdcs_vivos_node.xlsx",
@@ -75,7 +75,7 @@ AppModel.getTdcVivos = callback => {
             setInterval(function(){
               iRowsAffecTmp = ConnBd.getRowsAffec()
               
-            }, 1000)
+            }, 500)
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
@@ -116,4 +116,7 @@ AppModel.prueba = () =>{
   return iRowsAffecTmp;
 }
 
+AppModel.getDataTmp = () => {
+  return ConnBd.getDatos();
+}
 module.exports = AppModel;

@@ -33,25 +33,37 @@ router
     // res.send("iniciando");
 
     console.log("request: ", preventReCall);
-    if (!preventReCall) {
+   // if (!preventReCall) {
       preventReCall = AppController.getTdcVivos().then(results => {
+       // console.log(results)
+      
         res.send(results);
+       
         preventReCall = null;
      
         //console.log(results);
       });
-    }
+   //   res.end()
+   // }
+
+  
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
   .post("/prueba2", (req, res) => {
-    AppController.getTdcVivosPrueba()
+   // if (!preventReCall) {
+      AppController.getTdcVivos()
+      preventReCall = null;
+  
+
+  //  }
+      
   })
   .post("/prueba", (req, res) => {
 
     //AppController.getTdcVivosPrueba()
     var registros = AppController.prueba()
-    console.log(registros)
+   // console.log(registros)
     res.end(registros)
   })
   /*

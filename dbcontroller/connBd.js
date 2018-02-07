@@ -5,7 +5,7 @@ var oracledb = require("oracledb"),
   reloj = require("../commonjs/reloj"),
   //numRows = 100,
   iRowsAffec = 0,
-  //arrayData = [],
+  arrayData = [],
   //arrayHeader = [],
   ConnBd = () => {};
 
@@ -104,7 +104,7 @@ ConnBd.ejecutarSqlPromise = (conn, ssql, params) => {
  */
 ConnBd.getAllRows = (conn, results, numRows) => {
   //let iRowsAffec = 0,
-  let  arrayData = []; //array para almacenar los arrays de registros recuperados en cada bloque
+  //let  arrayData = []; //array para almacenar los arrays de registros recuperados en cada bloque
   numRows = numRows || 250;
   return new Promise((resolve, reject) => {
     function _getF(conn, results, numRows) {
@@ -170,11 +170,16 @@ ConnBd.getCabecera = (conn, results) => {
   //console.log(arrayHeader);
 };
 
-ConnBd.getRowsAffec = () =>{
+ConnBd.getRowsAffec = () => {
   return iRowsAffec;
 }
-ConnBd.setResetRowsAffec = () =>{
+ConnBd.setResetRowsAffec = () => {
   iRowsAffec = 0;
 }
+
+ConnBd.getDatos = () => {
+  return arrayData;
+}
+
 
 module.exports = ConnBd;
