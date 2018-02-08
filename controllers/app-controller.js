@@ -89,7 +89,8 @@ AppController.getTdcVivos = (req, res, next) => {
   let html = "",
     i = 1;
   return new Promise((resolve, reject) => {
-    AppModel.getTdcVivos(results => {
+    AppModel.getTdcVivos( results => {resolve(results);});
+    /*AppModel.getTdcVivos(results => {
       //if (AppController.errCrud(err, res)) return;
       // console.log(JSON.stringify(results));
 
@@ -110,7 +111,7 @@ AppController.getTdcVivos = (req, res, next) => {
       // res.send(html);
       //  resolve(html)
       resolve(html);
-    });
+    });*/
   });
 };
 
@@ -118,9 +119,11 @@ AppController.getTdcVivosPrueba = () =>{
   AppModel.getTdcVivos()
 }
 AppController.prueba = (req, res, next) => {
- var registros = AppModel.prueba()
- console.log (registros)
-  return registros+''
+ var registros = {'registros':AppModel.prueba(), 'datos':AppModel.getDataTmp()}
+ //registros = AppModel.prueba()
+ //registros = JSON.stringify(AppModel.getDataTmp())
+ //console.log (registros)
+  return JSON.stringify(registros)
 }
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {

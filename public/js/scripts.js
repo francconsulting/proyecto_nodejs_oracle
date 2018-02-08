@@ -7,13 +7,15 @@ $(document).ready(function() {
 
     $(document).ajaxSend(function(evt, jqxhr, opt) {
       //console.log(evt);
-      $("#resultado").html("ajaxSend");
+     // $("#resultado").html("ajaxSend");
     });
     $(document).ajaxStart(function(evt, jqxhr, opt) {
       //console.log(evt);
       $("#resultado").html("ajaxStart");
     });
+    
     var intervalId = setInterval(function() {
+<<<<<<< HEAD
       callAjax(
         "http://localhost:3001/prueba",
         function(data) {
@@ -36,10 +38,27 @@ $(document).ready(function() {
       .done(function() {
         $("#resultado").prepend("Desde otro DONE");
         res.send();
+=======
+     callAjax("http://localhost:3001/prueba", function(data){
+        console.log(data)
+        data = JSON.parse(data)
+        //callAjax("http://localhost:3001/tdcs")
+        if (data.registros == 'undefined'){ data.registros =  0}
+        
+        $("#error").html('Recibidos hasta ahora.... '+data.registros+' registros.')
+        $("#resultado").html(data.datos)
+      }, null, "POST","HTML")
+     
+    },500);
+
+ callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
+      .done(function() {
+        //$("#resultado").prepend("Desde otro DONE");
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
       })
       .done(function() {
         clearInterval(intervalId);
-        $("#resultado").append("Desde otro DONE");
+        //$("#resultado").append("Desde otro DONE");
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
         $("#error")
@@ -70,6 +89,10 @@ $(document).ready(function() {
           alert("Uncaught Error: " + jqXHR.responseText);
         }
       });
+<<<<<<< HEAD
+=======
+  
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
 
     var promise = doSomething();
     promise.progress(function(prog) {

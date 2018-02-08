@@ -31,31 +31,65 @@ router
     console.log("en post");
     // AppController.getTdcVivos();
     // res.send("iniciando");
+<<<<<<< HEAD
     console.log("request: ", !preventReCall);
     let cuenta = 0;
     if (!preventReCall) {
       preventReCall = AppController.getTdcVivos().then(results => {
         // res.send(results);
+=======
+
+    console.log("request: ", preventReCall);
+   // if (!preventReCall) {
+      preventReCall = AppController.getTdcVivos().then(results => {
+       // console.log(results)
+      
+        res.send(results);
+       
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
         preventReCall = null;
 
         //console.log(results);
       });
+<<<<<<< HEAD
     } else {
       res.end();
     }
 
     console.log("request: ", preventReCall, "  cuenta: ", cuenta);
+=======
+   //   res.end()
+   // }
+
+  
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
   .post("/prueba2", (req, res) => {
+<<<<<<< HEAD
     AppController.getTdcVivosPrueba();
+=======
+   // if (!preventReCall) {
+      AppController.getTdcVivos()
+      preventReCall = null;
+  
+
+  //  }
+      
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
   })
   .post("/prueba", (req, res) => {
     //AppController.getTdcVivosPrueba()
+<<<<<<< HEAD
     var registros = AppController.prueba();
     console.log(registros);
     res.end(registros);
+=======
+    var registros = AppController.prueba()
+   // console.log(registros)
+    res.end(registros)
+>>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
   })
   /*
     .get('/', PelisController.getAll)
