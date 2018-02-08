@@ -14,18 +14,28 @@ $(document).ready(function() {
       $("#resultado").html("ajaxStart");
     });
     var intervalId = setInterval(function() {
-      callAjax("http://localhost:3001/prueba", function(data){
-        console.log(data)
-        //callAjax("http://localhost:3001/tdcs")
-        if (data!= 'undefined'){ data =  data } else{data = 0}
-        $("#error").html('Recibidos hasta ahora.... '+data+' registros.')
-      }, null, "POST","HTML")
-      
-    },1000);
-  
+      callAjax(
+        "http://localhost:3001/prueba",
+        function(data) {
+          console.log(data);
+          //callAjax("http://localhost:3001/tdcs")
+          if (data != "undefined") {
+            data = data;
+          } else {
+            data = 0;
+          }
+          $("#error").html("Recibidos hasta ahora.... " + data + " registros.");
+        },
+        null,
+        "POST",
+        "HTML"
+      );
+    }, 1000);
+
     callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
         $("#resultado").prepend("Desde otro DONE");
+        res.send();
       })
       .done(function() {
         clearInterval(intervalId);
@@ -60,26 +70,24 @@ $(document).ready(function() {
           alert("Uncaught Error: " + jqXHR.responseText);
         }
       });
-     
 
-     var promise = doSomething(); 
-    promise.progress(function(prog) { 
+    var promise = doSomething();
+    promise.progress(function(prog) {
       console.log(prog);
-      $("#resultado").prepend('Desde otro>>>>> DONE: ',prog) 
-    })
+      $("#resultado").prepend("Desde otro>>>>> DONE: ", prog);
+    });
   });
 
   function printTabla(datos) {
     $("#resultado").html(datos);
   }
 
-
   $("h1").text("TDC Vivos");
   var fechaHora;
   function doSomething() {
     var dfd = $.Deferred();
     var count = 0;
-   /* var intervalId = setInterval(function() {
+    /* var intervalId = setInterval(function() {
       // dfd.notify(count++);
       fechaHora = new Date();
       dfd.notify(
@@ -89,13 +97,10 @@ $(document).ready(function() {
       count > 15 && clearInterval(intervalId);
     }, 1000);*/
 
-   for (let index = 0; index < 10; index++) {
-    dfd.notify(
-      $("#resultado").html('hola;')
-    );
-     
-   }
-   /* dfd.notify(
+    for (let index = 0; index < 10; index++) {
+      dfd.notify($("#resultado").html("hola;"));
+    }
+    /* dfd.notify(
       $("#resultado").html(count)
     );*/
     return dfd.promise();

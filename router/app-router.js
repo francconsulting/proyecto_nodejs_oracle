@@ -31,28 +31,31 @@ router
     console.log("en post");
     // AppController.getTdcVivos();
     // res.send("iniciando");
-
-    console.log("request: ", preventReCall);
+    console.log("request: ", !preventReCall);
+    let cuenta = 0;
     if (!preventReCall) {
       preventReCall = AppController.getTdcVivos().then(results => {
-        res.send(results);
+        // res.send(results);
         preventReCall = null;
-     
+
         //console.log(results);
       });
+    } else {
+      res.end();
     }
+
+    console.log("request: ", preventReCall, "  cuenta: ", cuenta);
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
   .post("/prueba2", (req, res) => {
-    AppController.getTdcVivosPrueba()
+    AppController.getTdcVivosPrueba();
   })
   .post("/prueba", (req, res) => {
-
     //AppController.getTdcVivosPrueba()
-    var registros = AppController.prueba()
-    console.log(registros)
-    res.end(registros)
+    var registros = AppController.prueba();
+    console.log(registros);
+    res.end(registros);
   })
   /*
     .get('/', PelisController.getAll)
