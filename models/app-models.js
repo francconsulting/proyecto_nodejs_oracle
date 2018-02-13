@@ -29,11 +29,7 @@ var //oracledb = require("oracledb"),
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
-<<<<<<< HEAD
   fs.readFile(
-=======
-   fs.readFile(
->>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -41,15 +37,9 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-<<<<<<< HEAD
   var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
 
   /*  fs.readFile(
-=======
-  var paramsSql = { distri: "CZZ", rowlimit: 5000}; //parametros para la consulta
-
-/*  fs.readFile(
->>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -81,18 +71,10 @@ AppModel.getTdcVivos = callback => {
             //console.log(data);
           })
           .then(() => {
-<<<<<<< HEAD
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
             setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
             }, 1000);
-=======
-            iRowsAffecTmp = ConnBd.setResetRowsAffec()
-            setInterval(function(){
-              iRowsAffecTmp = ConnBd.getRowsAffec()
-              
-            }, 500)
->>>>>>> d6e3712764b86baca67f369fb4044279f3d9bf62
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
