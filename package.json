@@ -15,16 +15,18 @@
   "author": "fmbv",
   "license": "MIT",
   "dependencies": {
-    "exceljs": "^0.8.1",
-    "express": "^4.16.2",
-    "json2xls": "^0.1.2",
-    "nodemon": "^1.12.4",
-    "oracledb": "^1.13.1",
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",
+    "exceljs": "^0.8.1",
+    "express": "^4.16.2",
     "express-method-override": "0.0.3",
+    "json2xls": "^0.1.2",
     "morgan": "^1.9.0",
+    "nodemon": "^1.12.4",
+    "oracledb": "^1.13.1",
     "responsimple": "^1.0.1",
-    "serve-favicon": "^2.4.5"
+    "serve-favicon": "^2.4.5",
+    "socket.io": "^2.0.4",
+    "socket.mvc": "^0.2.0"
   }
 }

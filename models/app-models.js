@@ -29,7 +29,7 @@ var //oracledb = require("oracledb"),
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
-   fs.readFile(
+  fs.readFile(
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -37,9 +37,9 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 50}; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 1 }; //parametros para la consulta
 
-/*  fs.readFile(
+  /*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -71,22 +71,24 @@ AppModel.getTdcVivos = callback => {
             //console.log(data);
           })
           .then(() => {
-            iRowsAffecTmp = ConnBd.setResetRowsAffec()
-            setInterval(function(){
-              iRowsAffecTmp = ConnBd.getRowsAffec()
-              
-            }, 500)
+            iRowsAffecTmp = ConnBd.setResetRowsAffec();
+            setInterval(function() {
+              iRowsAffecTmp = ConnBd.getRowsAffec();
+            }, 500);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
+                console.log(">>>>>>>>>arrayData: ", data.arrayData.length);
                 arrayData = data.arrayData;
                 iRowsAffec = data.iRowsAffec;
                 console.log(data.iRowsAffec);
                 reloj.timeStop();
+                data.arrayData.length = 0;
+                console.log(">>>>>>>>>arraydata: ", arrayData.length);
               })
               .then(() => {
                 // console.log("fin");
                 // console.log(configExcel);
-              /*  ExcelFile.crearLibro("stream", configExcel.name_wb);
+                /*  ExcelFile.crearLibro("stream", configExcel.name_wb);
                 ExcelFile.crearHoja(configExcel.name_ws);
                 ExcelFile.getHoja(configExcel.name_ws);
                 ExcelFile.setCabecera(arrayHeader);
@@ -112,16 +114,17 @@ AppModel.getTdcVivos = callback => {
       });
   });
 };
-AppModel.prueba = () =>{
-  console.log(iRowsAffecTmp)
+AppModel.prueba = () => {
+  console.log(iRowsAffecTmp);
   return iRowsAffecTmp;
-}
+};
 
 AppModel.getDataTmp = () => {
   return ConnBd.getDatos();
-}
+};
 
 AppModel.getArrayData = () => {
+  console.log("ARRAYDATA:", arrayData.length);
   return arrayData;
-}
+};
 module.exports = AppModel;
