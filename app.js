@@ -12,6 +12,8 @@ var express = require("express"),
   viewDir = `${__dirname}/views`,
   port = process.env.PORT || 3001,
   app = express();
+  
+
 
 app
   //configuracion app

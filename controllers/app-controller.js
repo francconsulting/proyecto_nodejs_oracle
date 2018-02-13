@@ -1,6 +1,7 @@
 "use strict";
 
 var AppModel = require("../models/app-models.js"),
+    socketMVC = require('socket.mvc'),
   AppController = () => {};
 
 function errorConn(err, res) {
@@ -86,6 +87,11 @@ AppController.errCrud = (err, res) => {
 };
 
 AppController.getTdcVivos = (req, res, next) => {
+  /*socketMVC.on('emit1', function(data){
+    console.log(data)
+  });*/
+  socketMVC.emit('emit2')
+
   let html = "",
     i = 1;
   return new Promise((resolve, reject) => {

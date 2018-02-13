@@ -1,4 +1,5 @@
 $("title").html("prueba de cambio de titulo");
+
 $(document).ready(function() {
   $("input[type=submit]").on("click", function(evt) {
     evt.preventDefault();
@@ -16,7 +17,7 @@ $(document).ready(function() {
     
     var intervalId = setInterval(function() {
      callAjax("http://localhost:3001/prueba", function(data){
-        console.log(data)
+        console.log("-----",data)
         data = JSON.parse(data)
         //callAjax("http://localhost:3001/tdcs")
         if (data.registros == 'undefined'){ data.registros =  0}
@@ -65,11 +66,11 @@ $(document).ready(function() {
         }
       });
 
-    var promise = doSomething();
+   /* var promise = doSomething();
     promise.progress(function(prog) {
       console.log(prog);
-      $("#resultado").prepend("Desde otro>>>>> DONE: ", prog);
-    });
+      $("#resultado").prepend("Desde otro>>>>> DONE>>: ", prog);
+    });*/
   });
 
   function printTabla(datos) {
@@ -93,10 +94,18 @@ $(document).ready(function() {
 
     for (let index = 0; index < 10; index++) {
       dfd.notify($("#resultado").html("hola;"));
-    }
+    }    $("#error").html("ksksksk")
     /* dfd.notify(
       $("#resultado").html(count)
     );*/
     return dfd.promise();
   }
+
+
+
+
+    
+  
+	
+
 });

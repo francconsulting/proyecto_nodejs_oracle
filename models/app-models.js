@@ -29,6 +29,10 @@ var //oracledb = require("oracledb"),
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
+  arrayData.length = 0
+  arrayHeader.length = 0
+
+  
   fs.readFile(
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
