@@ -37,7 +37,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 100 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 1 }; //parametros para la consulta
 
   /*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
@@ -84,7 +84,7 @@ AppModel.getTdcVivos = callback => {
               .then(() => {
                 // console.log("fin");
                 // console.log(configExcel);
-                ExcelFile.crearLibro("stream", configExcel.name_wb);
+                /* ExcelFile.crearLibro("stream", configExcel.name_wb);
                 ExcelFile.crearHoja(configExcel.name_ws);
                 ExcelFile.getHoja(configExcel.name_ws);
                 ExcelFile.setCabecera(arrayHeader);
@@ -98,8 +98,9 @@ AppModel.getTdcVivos = callback => {
                       reloj.timeStop();
                     }
                   });
-                });
+                });*/
                 //return arrayData
+                reloj.timeStop();
                 callback(arrayData);
               });
           });
