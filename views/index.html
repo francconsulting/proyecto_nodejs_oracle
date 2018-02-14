@@ -7,10 +7,15 @@
 	<!--<meta name="viewport" content="width=device-width, inicial-scale=1">-->
 	<link rel="stylesheet" type="text/css" href="./css/responsimple.min.css">
 	<link rel="stylesheet" type="text/css" href="../public/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/DataTables/css/datatables.min.css"/>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="/js/scripts.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/js/func_async.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	
+ 
+	<script type="text/javascript" src="DataTables/js/datatables.min.js"></script>
 	<title>
 
 	</title>
@@ -23,6 +28,19 @@
 		<input id="btnEnviar" type="submit" value="ejecutar">
 	</form>
 	<div id="resultado"></div>
+	<table id="tabla" class="display" cellspacing="0" width="100%">
+		<thead>
+            <tr>
+				<th>Column 0</th>
+                <th>Column 1</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+                <th>Column 4</th>
+                <th>Column 5</th>
+            </tr>
+        </thead>
+
+	</table>
 </body>
 
 </html>

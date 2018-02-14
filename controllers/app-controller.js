@@ -102,7 +102,6 @@ AppController.getTdcVivos = (req, res, next) => {
     /*AppModel.getTdcVivos(results => {
       //if (AppController.errCrud(err, res)) return;
       // console.log(JSON.stringify(results));
-
       html = "<table >";
       results.forEach(element => {
         // html +='<p>##'+element+'##</br></br></p>'

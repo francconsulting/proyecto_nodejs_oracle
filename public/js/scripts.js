@@ -1,7 +1,14 @@
 $("title").html("prueba de cambio de titulo");
 
 $(document).ready(function() {
+
+   var t = crearTabla();
+  
+
+
   $("input[type=submit]").on("click", function(evt) {
+
+
     evt.preventDefault();
     // console.log(evt);
     $("#btnEnviar").attr("disabled", true);
@@ -131,8 +138,9 @@ $(document).ready(function() {
       io.emit("mi_event_desde_cliente", { nombre: "fm", apellidos: "bv" });
     });
     io.on("filasAfectadas", function(data) {
-      console.log(data);
-      $("#resultado").html(data.datos);
+      console.log(data.datos);
+      mostrarDatos(data.datos);
+     // $("#resultado").html(data.datos);
       $("#error").html(data.message);
     });
     io.on("emit1", function(data) {
@@ -140,4 +148,43 @@ $(document).ready(function() {
       $("#error").html(data.message);
     });
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
+
+
+  function crearTabla(){
+   var t =  $('#tabla').DataTable({
+      "language": {
+        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    }
+    });
+    return t;
+  }
+
+  function mostrarDatos(data){
+    t.rows().remove()
+    var i = 1,
+        parar = false;
+   // $("#resultado").html("");
+    //  console.log(data)
+      console.log(parar)
+      data.forEach(element => {
+        console.log(element)
+        t.rows.add(element)
+       /* element.forEach(e => {
+        //  console.log(e)
+          //$("#resultado").append(i +  "-. " + e+"<br/>")
+         // console.log(i)
+          if (i < 200){
+          t.row.add([i, e[0], e[1], e[2], e[3], e[4], e[5]]).draw(true)
+        }
+          i++;
+        });*/
+     
+        console.log("----",i)
+      });
+
+      
+  }
+  
+
+
 });
