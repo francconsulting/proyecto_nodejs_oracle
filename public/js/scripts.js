@@ -4,36 +4,48 @@ $(document).ready(function() {
   $("input[type=submit]").on("click", function(evt) {
     evt.preventDefault();
     // console.log(evt);
+    $("#btnEnviar").attr("disabled", true);
     $("#resultado").html("Iniciando la descarga....");
 
     $(document).ajaxSend(function(evt, jqxhr, opt) {
       //console.log(evt);
-     // $("#resultado").html("ajaxSend");
+      // $("#resultado").html("ajaxSend");
     });
     $(document).ajaxStart(function(evt, jqxhr, opt) {
       //console.log(evt);
+      $("#error").html("Iniciando...");
       $("#resultado").html("ajaxStart");
     });
-    
-    var intervalId = setInterval(function() {
-     callAjax("http://localhost:3001/prueba", function(data){
-        console.log("-----",data)
-        data = JSON.parse(data)
-        //callAjax("http://localhost:3001/tdcs")
-        if (data.registros == 'undefined'){ data.registros =  0}
-        
-        $("#error").html('Recibidos hasta ahora.... '+data.registros+' registros.')
-        $("#resultado").html(data.datos)
-      }, null, "POST","HTML")
-     
-    },500);
 
- callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
+    /*var intervalId = setInterval(function() {
+      callAjax(
+        "http://localhost:3001/prueba",
+        function(data) {
+          //console.log("-----", data);
+          data = JSON.parse(data);
+          //callAjax("http://localhost:3001/tdcs")
+          if (data.registros == "undefined") {
+            data.registros = 0;
+          }
+
+          $("#error").html(
+            "Recibidos hasta ahora.... " + data.registros + " registros."
+          );
+          $("#resultado").html(data.datos);
+        },
+        null,
+        "POST",
+        "HTML"
+      );
+    }, 500);*/
+
+    callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
-        //$("#resultado").prepend("Desde otro DONE");
+        //$("#resultado").prepend("Preparando resultados");
+        $("#btnEnviar").attr("disabled", false);
       })
       .done(function() {
-        clearInterval(intervalId);
+        // clearInterval(intervalId);
         //$("#resultado").append("Desde otro DONE");
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
@@ -66,7 +78,7 @@ $(document).ready(function() {
         }
       });
 
-   /* var promise = doSomething();
+    /* var promise = doSomething();
     promise.progress(function(prog) {
       console.log(prog);
       $("#resultado").prepend("Desde otro>>>>> DONE>>: ", prog);
@@ -74,7 +86,7 @@ $(document).ready(function() {
   });
 
   function printTabla(datos) {
-    $("#resultado").html(datos);
+    // $("#resultado").html(datos);
   }
 
   $("h1").text("TDC Vivos");
@@ -94,18 +106,38 @@ $(document).ready(function() {
 
     for (let index = 0; index < 10; index++) {
       dfd.notify($("#resultado").html("hola;"));
-    }    $("#error").html("ksksksk")
+    }
+    $("#error").html("ksksksk");
     /* dfd.notify(
       $("#resultado").html(count)
     );*/
     return dfd.promise();
   }
 
+  /*var socket = io.connect("http://localhost:3001");
+  socket.on("emit2", function(data) {
+    console.log(data);
+    socket.emit("message", "hello from the browser");
+  });*/
 
+  (function(io) {
+    "use strict";
+    var io = io();
+    io.on("emit2", function(data) {
+      console.log(data);
+      $("#error").html(data.message);
 
-
-    
-  
-	
-
+      // document.getElementById("hello").innerHTML = data.message;
+      io.emit("mi_event_desde_cliente", { nombre: "fm", apellidos: "bv" });
+    });
+    io.on("filasAfectadas", function(data) {
+      console.log(data);
+      $("#resultado").html(data.datos);
+      $("#error").html(data.message);
+    });
+    io.on("emit1", function(data) {
+      console.log(data.message);
+      $("#error").html(data.message);
+    });
+  })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 });

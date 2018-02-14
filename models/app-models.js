@@ -24,15 +24,15 @@ var //oracledb = require("oracledb"),
   arrayHeader = [],
   arrayData = [],
   ssql,
+  socketMVC = require("socket.mvc"),
   AppModel = () => {};
 
 //ssql = "select * FROM GIGA_OWNER.t1soatr TDC where rownum <= 5 ";
 
 AppModel.getTdcVivos = callback => {
-  arrayData.length = 0
-  arrayHeader.length = 0
+  arrayData.length = 0;
+  arrayHeader.length = 0;
 
-  
   fs.readFile(
     "./querys/instruccion_sql.sql",
     { encoding: "utf-8" },
@@ -41,7 +41,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 1 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 20000 }; //parametros para la consulta
 
   /*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
@@ -66,6 +66,9 @@ AppModel.getTdcVivos = callback => {
     }
     mensaje = "Conectado. Esperando a ejecutar la consulta.....";
     reloj.setMensaje(mensaje);
+
+    socketMVC.emit("emit2", { message: mensaje });
+
     //  reloj.timeStart();
     ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
       .then(results => {
@@ -76,9 +79,14 @@ AppModel.getTdcVivos = callback => {
           })
           .then(() => {
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
-            setInterval(function() {
+            var intervalId = setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
-            }, 1000);
+              socketMVC.emit("filasAfectadas", {
+                message:
+                  "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
+                datos: AppModel.getDataTmp()
+              });
+            }, 500);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
@@ -104,6 +112,12 @@ AppModel.getTdcVivos = callback => {
                   });
                 });*/
                 //return arrayData
+                iRowsAffecTmp = ConnBd.getRowsAffec();
+                socketMVC.emit("filasAfectadas", {
+                  message: "Registros totales recuperados: " + iRowsAffecTmp,
+                  datos: AppModel.getDataTmp()
+                });
+                clearInterval(intervalId);
                 reloj.timeStop();
                 callback(arrayData);
               });

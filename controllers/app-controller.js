@@ -1,7 +1,7 @@
 "use strict";
 
 var AppModel = require("../models/app-models.js"),
-    socketMVC = require('socket.mvc'),
+  //socketMVC = require("socket.mvc"),
   AppController = () => {};
 
 function errorConn(err, res) {
@@ -90,12 +90,15 @@ AppController.getTdcVivos = (req, res, next) => {
   /*socketMVC.on('emit1', function(data){
     console.log(data)
   });*/
-  socketMVC.emit('emit2')
+
+  //socketMVC.emit("emit2", { message: "hola caracola, desde sockect.IO#####" });
 
   let html = "",
     i = 1;
   return new Promise((resolve, reject) => {
-    AppModel.getTdcVivos( results => {resolve(results);});
+    AppModel.getTdcVivos(results => {
+      resolve(results);
+    });
     /*AppModel.getTdcVivos(results => {
       //if (AppController.errCrud(err, res)) return;
       // console.log(JSON.stringify(results));
@@ -121,16 +124,19 @@ AppController.getTdcVivos = (req, res, next) => {
   });
 };
 
-AppController.getTdcVivosPrueba = () =>{
-  AppModel.getTdcVivos()
-}
+AppController.getTdcVivosPrueba = () => {
+  AppModel.getTdcVivos();
+};
 AppController.prueba = (req, res, next) => {
- var registros = {'registros':AppModel.prueba(), 'datos':AppModel.getDataTmp()}
- //registros = AppModel.prueba()
- //registros = JSON.stringify(AppModel.getDataTmp())
- //console.log (registros)
-  return JSON.stringify(registros)
-}
+  var registros = {
+    registros: AppModel.prueba(),
+    datos: AppModel.getDataTmp()
+  };
+  //registros = AppModel.prueba()
+  //registros = JSON.stringify(AppModel.getDataTmp())
+  //console.log (registros)
+  return JSON.stringify(registros);
+};
 /*AppController.getTdcVivos = (req, res, next) => {
     AppModel.getTdcVivos( (results) => {
         let locals = {

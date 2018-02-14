@@ -40,7 +40,7 @@ function callAjax(url, doneFuncion, parametros, tipo, tipoDato, tiempoEspera) {
     }
   })
     .done(function(result) {
-      console.log("done", result);
+      // console.log("done", result);
       //cuando se ejecuta la peticion de forma correcta
       doneFuncion(result); //hacemos la llamada a la funcion calback pasada por parametros para utilizar los datos recuperados
       /*    $("#procesando").fadeOut(1000, function(){
