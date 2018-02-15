@@ -20,7 +20,7 @@ $(document).ready(function() {
     });
     $(document).ajaxStart(function(evt, jqxhr, opt) {
       //console.log(evt);
-      $("#error").html("Iniciando...");
+     // $("#error").html("Iniciando...");
       $("#resultado").html("ajaxStart");
     });
 
@@ -147,14 +147,19 @@ $(document).ready(function() {
       console.log(data.message);
       $("#error").html(data.message);
     });
+    io.on('dataset', function(data){
+      dataSet(data)
+    })
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
 
-  function crearTabla(){
+  function crearTabla(dataset){
    var t =  $('#tabla').DataTable({
       "language": {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
-    }
+      },
+      "data": dataset,
+      "destroy": true
     });
     return t;
   }
@@ -167,17 +172,17 @@ $(document).ready(function() {
     //  console.log(data)
       console.log(parar)
       data.forEach(element => {
-        console.log(element)
-        t.rows.add(element)
-       /* element.forEach(e => {
+       // console.log(element)
+      //  t.rows.add(element)
+        element.forEach(e => {
         //  console.log(e)
           //$("#resultado").append(i +  "-. " + e+"<br/>")
          // console.log(i)
-          if (i < 200){
+          if (i < 50){
           t.row.add([i, e[0], e[1], e[2], e[3], e[4], e[5]]).draw(true)
         }
           i++;
-        });*/
+        });
      
         console.log("----",i)
       });
@@ -185,6 +190,18 @@ $(document).ready(function() {
       
   }
   
-
+  function dataSet(datos){
+    //console.log(JSON.stringify(datos.datos[0]))
+    //console.log(datos.datos.length)
+    var misDatos = []
+    datos.datos.forEach(function(element){
+      console.log(element)
+      element.forEach(function(e){
+        misDatos.push(e)
+      })
+    } ) 
+    console.log(misDatos.length)
+    crearTabla(misDatos)
+  }
 
 });

@@ -41,7 +41,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
 
   /*  fs.readFile(
     "./querys/consulta TDC vivos.sql",
@@ -81,11 +81,21 @@ AppModel.getTdcVivos = callback => {
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
             var intervalId = setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
-              socketMVC.emit("filasAfectadas", {
-                message:
-                  "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
-                datos: AppModel.getDataTmp()
-              });
+              if (iRowsAffecTmp<1000){
+                socketMVC.emit("filasAfectadas", {
+                  message:
+                    "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
+                  datos: AppModel.getDataTmp()
+                });
+              }else{
+                socketMVC.emit("filasAfectadas", {
+                  message:
+                    "Registros recuperados hasta ahora.... " + iRowsAffecTmp
+                });
+              }
+                
+              
+              
             }, 500);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
@@ -117,6 +127,7 @@ AppModel.getTdcVivos = callback => {
                   message: "Registros totales recuperados: " + iRowsAffecTmp,
                   datos: AppModel.getDataTmp()
                 });
+                socketMVC.emit('dataset',{datos:arrayData})
                 clearInterval(intervalId);
                 reloj.timeStop();
                 callback(arrayData);
