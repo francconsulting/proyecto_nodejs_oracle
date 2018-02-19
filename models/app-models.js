@@ -43,7 +43,8 @@ AppModel.getTdcVivos = callback => {
 
   var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
 
-  /*  fs.readFile(
+/*
+    fs.readFile(
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
     (err, data) => {
@@ -87,16 +88,16 @@ AppModel.getTdcVivos = callback => {
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
                   datos: AppModel.getDataTmp()
                 });
-              }else{
+              }/*else{
                 socketMVC.emit("filasAfectadas", {
                   message:
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp
                 });
-              }
+              }*/
                 
               
               
-            }, 500);
+            }, 2000);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;

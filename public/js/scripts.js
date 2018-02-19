@@ -45,6 +45,7 @@ $(document).ready(function() {
         "HTML"
       );
     }, 500);*/
+ //   dataPrueba()
 
     callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
@@ -127,6 +128,7 @@ $(document).ready(function() {
     socket.emit("message", "hello from the browser");
   });*/
 
+  var arrDatos = [];
   (function(io) {
     "use strict";
     var io = io();
@@ -149,6 +151,8 @@ $(document).ready(function() {
     });
     io.on('dataset', function(data){
       dataSet(data)
+      console.log(data)
+      arrDatos = data
     })
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
@@ -158,9 +162,19 @@ $(document).ready(function() {
       "language": {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
       },
+      "iDisplayLength" :10,
+      "aLengthMenu": [10,25],
       "data": dataset,
       "destroy": true
     });
+    t.on('page.dt', function(){
+        console.log(t.page.info())
+        console.log(t.page.info().page +" de "+t.page.info().pages)
+        console.log(t.data().length +'  '+t.page.info().length)
+        //t.page()
+        console.log(arrDatos)
+      })
+
     return t;
   }
 
@@ -204,4 +218,34 @@ $(document).ready(function() {
     crearTabla(misDatos)
   }
 
+
+  function dataPrueba(){
+    var t =  $('#tabla').DataTable({
+      "language": {
+        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+      },
+      "iDisplayLength" :10,
+      "aLengthMenu": [10,25],
+      "bProcessing" : true,
+      "bServerSide" : true,
+      "sAjaxSource" :  "http://localhost:3001/tdcs",
+      "sServerMethod": "POST", 
+      "bJQueryUI": true,
+        "bPaginate": true,
+        "bSort": false,
+      "destroy": true,
+
+    });
+   t.on('page.dt', function(){console.log(t.page.len(2).draw())})
+    return t;
+  }
+  t.on( 'preDraw', function () {
+    startTime = new Date().getTime();
+} )
+.on( 'draw.dt', function () {
+    $("#error").append( '  -> Redraw took at: '+(new Date().getTime()-startTime)+'mS' );
+} )
+.on( 'preInit.dt', function () {
+  $("#error").append( ' Iniciandoooooooooooo' );
+} )
 });
