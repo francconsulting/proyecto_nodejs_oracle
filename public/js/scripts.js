@@ -4,8 +4,8 @@ $(document).ready(function() {
 
   $('#example').DataTable( {
     serverSide: true,
-    ordering: false,
-    searching: false,
+    ordering: true,
+    searching: true,
     ajax: function ( data, callback, settings ) {
         var out = [];
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
                 draw: data.draw,
                 data: out,
                 recordsTotal: 5000000,
-                recordsFiltered: 5000
+                recordsFiltered: 500000
             } );
         }, 50 );
     },
@@ -255,7 +255,7 @@ $(document).ready(function() {
     } ) 
     console.log(misDatos.length)
     
-    crearTabla(misDatos)   //Descomentar
+    //crearTabla(misDatos)   //Descomentar
   }
 
 
