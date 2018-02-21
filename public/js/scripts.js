@@ -2,7 +2,38 @@ $("title").html("prueba de cambio de titulo");
 
 $(document).ready(function() {
 
-   var t = crearTabla();
+  $('#example').DataTable( {
+    serverSide: true,
+    ordering: false,
+    searching: false,
+    ajax: function ( data, callback, settings ) {
+        var out = [];
+
+        for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
+            out.push( [ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5' ] );
+        }
+
+        setTimeout( function () {
+            callback( {
+                draw: data.draw,
+                data: out,
+                recordsTotal: 5000000,
+                recordsFiltered: 5000
+            } );
+        }, 50 );
+    },
+    scrollY: 200,
+    scroller: {
+        loadingIndicator: true
+    }
+} ); 
+  
+  
+  
+  
+  
+  
+  var t  = crearTabla();
   
 
 
@@ -45,7 +76,9 @@ $(document).ready(function() {
         "HTML"
       );
     }, 500);*/
- //   dataPrueba()
+
+
+//    dataPrueba()
 
     callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
@@ -141,7 +174,11 @@ $(document).ready(function() {
     });
     io.on("filasAfectadas", function(data) {
       console.log(data.datos);
-      mostrarDatos(data.datos);
+      console.log(data.datos);
+      console.log(data.totalRows)
+     // mostrarDatos(data.datos); 
+     dataSet(data)
+  
      // $("#resultado").html(data.datos);
       $("#error").html(data.message);
     });
@@ -162,19 +199,21 @@ $(document).ready(function() {
       "language": {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
       },
+      "processing" : true,
+      "deferLoading": 1000,
       "iDisplayLength" :10,
-      "aLengthMenu": [10,25],
+      "aLengthMenu":  [[10,25,-1],[10,25, "Todos"]],
       "data": dataset,
       "destroy": true
     });
-    t.on('page.dt', function(){
+   /* t.on('page.dt', function(){
         console.log(t.page.info())
         console.log(t.page.info().page +" de "+t.page.info().pages)
         console.log(t.data().length +'  '+t.page.info().length)
         //t.page()
         console.log(arrDatos)
       })
-
+*/
     return t;
   }
 
@@ -215,7 +254,8 @@ $(document).ready(function() {
       })
     } ) 
     console.log(misDatos.length)
-    crearTabla(misDatos)
+    
+    crearTabla(misDatos)   //Descomentar
   }
 
 
@@ -225,15 +265,18 @@ $(document).ready(function() {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
       },
       "iDisplayLength" :10,
-      "aLengthMenu": [10,25],
-      "bProcessing" : true,
-      "bServerSide" : true,
-      "sAjaxSource" :  "http://localhost:3001/tdcs",
+      "LengthMenu": [[10,25,-1],[10,25, "Todos"]],
+      "processing" : true,
+      "serverSide" : true,
+      "deferRender" : true,
+      //"deferLoading": 1000,
+     "sAjaxSource" :  "http://localhost:3001/tdcs",
       "sServerMethod": "POST", 
       "bJQueryUI": true,
         "bPaginate": true,
         "bSort": false,
       "destroy": true,
+      "columns" : [{title : "c1"},{title : "c2"},{title : "c3"},{title : "c4"}]
 
     });
    t.on('page.dt', function(){console.log(t.page.len(2).draw())})
@@ -248,4 +291,11 @@ $(document).ready(function() {
 .on( 'preInit.dt', function () {
   $("#error").append( ' Iniciandoooooooooooo' );
 } )
+
+function dataArray(){
+  console.log(arrDatos)
+  
+}
+
+
 });

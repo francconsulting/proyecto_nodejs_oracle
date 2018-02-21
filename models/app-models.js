@@ -41,7 +41,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 100000 }; //parametros para la consulta
 
 /*
     fs.readFile(
@@ -59,6 +59,7 @@ AppModel.getTdcVivos = callback => {
     name_wb: "tdcs_vivos_node.xlsx",
     name_ws: "tdc"
   };
+var prueba = [];
 
   ConnBd.open((err, conn) => {
     if (err) {
@@ -82,13 +83,17 @@ AppModel.getTdcVivos = callback => {
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
             var intervalId = setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
-              if (iRowsAffecTmp<1000){
+            /*  if (iRowsAffecTmp<10){
                 socketMVC.emit("filasAfectadas", {
                   message:
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
-                  datos: AppModel.getDataTmp()
+                  datos: AppModel.getDataTmp(),
+                  totalRows: 1000,
+                  datos2 : prueba.push(AppModel.getDataTmp())
                 });
-              }/*else{
+                console.log('-------------------------')
+              }*/
+              /*else{
                 socketMVC.emit("filasAfectadas", {
                   message:
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp
@@ -97,7 +102,7 @@ AppModel.getTdcVivos = callback => {
                 
               
               
-            }, 2000);
+            },5000);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
@@ -123,13 +128,19 @@ AppModel.getTdcVivos = callback => {
                   });
                 });*/
                 //return arrayData
-                iRowsAffecTmp = ConnBd.getRowsAffec();
+        /*        iRowsAffecTmp = ConnBd.getRowsAffec();
                 socketMVC.emit("filasAfectadas", {
                   message: "Registros totales recuperados: " + iRowsAffecTmp,
-                  datos: AppModel.getDataTmp()
+                  datos: AppModel.getDataTmp(),
+                  totalRows : 1000,
+                  datos2 : prueba.push(AppModel.getDataTmp())
                 });
-                socketMVC.emit('dataset',{datos:arrayData})
-                clearInterval(intervalId);
+                */
+                socketMVC.emit('dataset',{
+                  datos:arrayData,
+                  datos2 : prueba.push(AppModel.getDataTmp())
+                })
+              //  clearInterval(intervalId);
                 reloj.timeStop();
                 callback(arrayData);
               });
