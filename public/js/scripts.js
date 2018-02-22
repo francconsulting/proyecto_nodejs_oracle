@@ -2,34 +2,7 @@ $("title").html("prueba de cambio de titulo");
 
 $(document).ready(function() {
 
-  $('#example').DataTable( {
-    serverSide: true,
-    ordering: true,
-    searching: true,
-    ajax: function ( data, callback, settings ) {
-        var out = [];
 
-        for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
-            out.push( [ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5' ] );
-        }
-
-        setTimeout( function () {
-            callback( {
-                draw: data.draw,
-                data: out,
-                recordsTotal: 5000000,
-                recordsFiltered: 500000
-            } );
-        }, 50 );
-    },
-    scrollY: 200,
-    scroller: {
-        loadingIndicator: true
-    }
-} ); 
-  
-  
-  
   
   
   
@@ -78,7 +51,7 @@ $(document).ready(function() {
     }, 500);*/
 
 
-//    dataPrueba()
+ //   dataPrueba()
 
     callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
@@ -196,15 +169,18 @@ $(document).ready(function() {
 
   function crearTabla(dataset){
    var t =  $('#tabla').DataTable({
-      "language": {
+     "language": {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
       },
-      "processing" : true,
-      "deferLoading": 1000,
-      "iDisplayLength" :10,
-      "aLengthMenu":  [[10,25,-1],[10,25, "Todos"]],
-      "data": dataset,
-      "destroy": true
+      processing : true,
+      sLoadingRecords: "Please wait - loading...",
+      deferLoading: 1000,
+      iDisplayLength :10,
+      aLengthMenu:  [[10,25,-1],[10,25, "Todos"]],
+      data: dataset,
+      destroy: true
+
+
     });
    /* t.on('page.dt', function(){
         console.log(t.page.info())
@@ -254,8 +230,7 @@ $(document).ready(function() {
       })
     } ) 
     console.log(misDatos.length)
-    
-    //crearTabla(misDatos)   //Descomentar
+    crearTabla(misDatos)   //Descomentar
   }
 
 
