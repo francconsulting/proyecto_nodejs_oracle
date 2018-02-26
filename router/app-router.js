@@ -3,7 +3,8 @@
 var AppController = require("../controllers/app-controller"),
   express = require("express"),
   path = require("path"),
-  router = express.Router();
+  router = express.Router(),
+  socketMVC = require("socket.mvc");
 /**
  * LA FUNCTION TPL NO LA VAMOS A USAR
  *
@@ -34,12 +35,19 @@ router
     console.log("request: ", !preventReCall);
     let cuenta = 0;
     //if (!preventReCall) {
-    preventReCall = AppController.getTdcVivos().then(results => {
+  /* preventReCall = AppController.getTdcVivos().then(results => {
+      console.log(JSON.stringify(results))
       res.send(results);
       preventReCall = null;
 
       //console.log(results);
-    });
+    });*/
+
+    
+     AppController.getTdcVivos()
+    
+    
+    //res.end()
     //} else {
     //  res.end();
     // }

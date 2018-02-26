@@ -92,7 +92,6 @@ AppController.getTdcVivos = (req, res, next) => {
   });*/
 
   //socketMVC.emit("emit2", { message: "hola caracola, desde sockect.IO#####" });
-
   let html = "",
     i = 1;
   return new Promise((resolve, reject) => {

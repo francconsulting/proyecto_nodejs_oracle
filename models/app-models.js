@@ -41,7 +41,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 50000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
 
 /*
     fs.readFile(
@@ -141,8 +141,9 @@ var prueba = [];
                   datos2 : prueba.push(AppModel.getDataTmp())
                 })
               //  clearInterval(intervalId);
-                reloj.timeStop();
-                callback(arrayData);
+              reloj.timeStop();
+              callback(arrayData);
+             
               });
           });
       })
