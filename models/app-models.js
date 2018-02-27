@@ -43,7 +43,7 @@ AppModel.getTdcVivos = callback => {
 
   var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
 
-/*
+  /*
     fs.readFile(
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
@@ -59,7 +59,7 @@ AppModel.getTdcVivos = callback => {
     name_wb: "tdcs_vivos_node.xlsx",
     name_ws: "tdc"
   };
-var prueba = [];
+  var prueba = [];
 
   ConnBd.open((err, conn) => {
     if (err) {
@@ -83,7 +83,7 @@ var prueba = [];
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
             var intervalId = setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
-            /*  if (iRowsAffecTmp<10){
+              /*  if (iRowsAffecTmp<10){
                 socketMVC.emit("filasAfectadas", {
                   message:
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
@@ -99,10 +99,7 @@ var prueba = [];
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp
                 });
               }*/
-                
-              
-              
-            },5000);
+            }, 5000);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
@@ -128,7 +125,7 @@ var prueba = [];
                   });
                 });*/
                 //return arrayData
-        /*        iRowsAffecTmp = ConnBd.getRowsAffec();
+                /*        iRowsAffecTmp = ConnBd.getRowsAffec();
                 socketMVC.emit("filasAfectadas", {
                   message: "Registros totales recuperados: " + iRowsAffecTmp,
                   datos: AppModel.getDataTmp(),
@@ -136,14 +133,14 @@ var prueba = [];
                   datos2 : prueba.push(AppModel.getDataTmp())
                 });
                 */
-                socketMVC.emit('dataset',{
-                  datos:arrayData,
-                  datos2 : prueba.push(AppModel.getDataTmp())
-                })
-              //  clearInterval(intervalId);
-              reloj.timeStop();
-              callback(arrayData);
-             
+                socketMVC.emit("dataset", {
+                  cabecera: arrayHeader,
+                  datos: arrayData,
+                  datos2: prueba.push(AppModel.getDataTmp())
+                });
+                //  clearInterval(intervalId);
+                reloj.timeStop();
+                callback(arrayData);
               });
           });
       })

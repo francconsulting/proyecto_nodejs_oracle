@@ -1,21 +1,13 @@
 $("title").html("prueba de cambio de titulo");
 
 $(document).ready(function() {
-
-
-  
-  
-  var t  ;//= crearTabla();
-
-  
-
+  var t; //= crearTabla();
 
   $("input[type=submit]").on("click", function(evt) {
- 
     //t =  crearTabla();
 
     evt.preventDefault();
-    
+
     // console.log(evt);
     $("#btnEnviar").attr("disabled", true);
     $("#resultado").html("Iniciando la descarga....");
@@ -26,7 +18,7 @@ $(document).ready(function() {
     });
     $(document).ajaxStart(function(evt, jqxhr, opt) {
       //console.log(evt);
-     // $("#error").html("Iniciando...");
+      // $("#error").html("Iniciando...");
       $("#resultado").html("ajaxStart");
     });
 
@@ -52,10 +44,9 @@ $(document).ready(function() {
       );
     }, 500);*/
 
-
-   //t =  dataPrueba()
-   callAjax("http://localhost:3001/tdcs")
- /*   callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
+    //t =  dataPrueba()
+    callAjax("http://localhost:3001/tdcs");
+    /*   callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
         //$("#resultado").prepend("Preparando resultados");
         $("#btnEnviar").attr("disabled", false);
@@ -102,12 +93,10 @@ $(document).ready(function() {
   });
 
   function printTabla(datos) {
-     $("#resultado").html('ksksksksks');
+    $("#resultado").html("ksksksksks");
   }
 
   $("h1").text("TDC Vivos");
-  
-  
 
   /*var socket = io.connect("http://localhost:3001");
   socket.on("emit2", function(data) {
@@ -129,45 +118,50 @@ $(document).ready(function() {
     io.on("filasAfectadas", function(data) {
       console.log(data.datos);
       console.log(data.datos);
-      console.log(data.totalRows)
-     // mostrarDatos(data.datos); 
-     dataSet(data)
-  
-     // $("#resultado").html(data.datos);
+      console.log(data.totalRows);
+      // mostrarDatos(data.datos);
+      dataSet(data);
+
+      // $("#resultado").html(data.datos);
       $("#error").html(data.message);
     });
     io.on("emit1", function(data) {
       console.log(data.message);
       $("#error").html(data.message);
     });
-    io.on('dataset', function(data){
-      dataSet(data)
-  //    console.log(data)
-      arrDatos = data
-    })
+    io.on("dataset", function(data) {
+      dataSet(data);
+      //    console.log(data)
+      arrDatos = data;
+    });
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
-
-  function crearTabla(dataset){
-   var t =  $('#tabla').DataTable({
-     "language": {
-        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+  function crearTabla(cabecera, dataset) {
+    var t = $("#tabla").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
-      processing : true,
+      processing: true,
       sLoadingRecords: "Please wait - loading...",
       deferLoading: 1000,
-      iDisplayLength :10,
-      aLengthMenu:  [[10,25,-1],[10,25, "Todos"]],
+      iDisplayLength: 10,
+      aLengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
       data: dataset,
-      destroy: true                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+      destroy: true,
+      columns: [
+        { title: "c1" },
+        { title: "c2" },
+        { title: "c3" },
+        { title: "c4" }
+      ]
+      //columns: cabecera
     });
-    t.on( 'draw.dt', function (data) {
+    t.on("draw.dt", function(data) {
       console.log();
       //  $("#error").append( '  -> Redraw took at: '+(new Date().getTime()-startTime)+'mS' );
-        $("#btnEnviar").attr("disabled", false);
-        
-      } )
-   /* t.on('page.dt', function(){
+      $("#btnEnviar").attr("disabled", false);
+    });
+    /* t.on('page.dt', function(){
         console.log(t.page.info())
         console.log(t.page.info().page +" de "+t.page.info().pages)
         console.log(tcrearTabla();.data().length +'  '+t.page.info().length)
@@ -178,102 +172,97 @@ $(document).ready(function() {
     return t;
   }
 
-  
-  
-  function dataSet(datos){
+  function dataSet(datos) {
     //console.log(JSON.stringify(datos.datos[0]))
-    //console.log(datos.datos.length)
-    var misDatos = []
-    datos.datos.forEach(function(element){
-     // console.log(element)
-      element.forEach(function(e){
-        misDatos.push(e)
-      })
-    } ) 
+
+    var aDatos = [],
+      cabecera = [];
+
+    datos.datos.forEach(function(element) {
+      // console.log(element)
+      element.forEach(function(e) {
+        aDatos.push(e);
+      });
+    });
+    console.log(JSON.stringify(datos.cabecera));
+
+    datos.cabecera.forEach(function(element) {
+      cabecera.push({ title: element.header });
+    });
+    console.log(JSON.stringify(cabecera));
     //console.log(misDatos.length)
-    crearTabla(misDatos)   //Descomentar
+    crearTabla(JSON.stringify(cabecera), aDatos); //Descomentar
   }
 
-
-
-
-  
-
-  function dataPrueba(){
-     t =  $('#tabla').DataTable({
-      "language": {
-        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+  function dataPrueba() {
+    t = $("#tabla").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
-      "iDisplayLength" :10,
-      "LengthMenu": [[10,25,-1],[10,25, "Todos"]],
-      "processing" : true,
-      "serverSide" : true,
-      "deferRender" : true,
+      iDisplayLength: 10,
+      LengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
+      processing: true,
+      serverSide: true,
+      deferRender: true,
       //"deferLoading": 1000,
-     "sAjaxSource" :  "http://localhost:3001/tdcs",
-      "sServerMethod": "POST", 
-      "bJQueryUI": true,
-        "bPaginate": true,
-        "bSort": false,
-      "destroy": true,
-      "columns" : [{title : "c1"},{title : "c2"},{title : "c3"},{title : "c4"}]
-
+      sAjaxSource: "http://localhost:3001/tdcs",
+      sServerMethod: "POST",
+      bJQueryUI: true,
+      bPaginate: true,
+      bSort: false,
+      destroy: true,
+      columns: [
+        { title: "c1" },
+        { title: "c2" },
+        { title: "c3" },
+        { title: "c4" }
+      ]
     });
     return t;
 
-    t.on( 'preDraw', function (data) {
+    t.on("preDraw", function(data) {
       startTime = new Date().getTime();
-    
+    });
+    on(" page.dt", function() {
+      console.log(t.page.len(2).draw());
     })
-    on(' page.dt', function(){console.log(t.page.len(2).draw())})
-    .on( 'draw.dt', function (data) {
-    console.log();
-      $("#error").append( '  -> Redraw took at: '+(new Date().getTime()-startTime)+'mS' );
-      $("#btnEnviar").attr("disabled", false);
-      
-    } )
-  .on( 'preInit.dt', function () {
-    $("#error").append( ' Iniciandoooooooooooo' );
-  } )
+      .on("draw.dt", function(data) {
+        console.log();
+        $("#error").append(
+          "  -> Redraw took at: " + (new Date().getTime() - startTime) + "mS"
+        );
+        $("#btnEnviar").attr("disabled", false);
+      })
+      .on("preInit.dt", function() {
+        $("#error").append(" Iniciandoooooooooooo");
+      });
   }
-  
 
+  function dataArray() {
+    console.log(arrDatos);
+  }
 
-
-
-function dataArray(){
-  console.log(arrDatos)
-  
-}
-
-
-
-
-
-function mostrarDatos(data){
-  t.rows().remove()
-  var i = 1,
+  function mostrarDatos(data) {
+    t.rows().remove();
+    var i = 1,
       parar = false;
- // $("#resultado").html("");
-  //  console.log(data)
-    console.log(parar)
+    // $("#resultado").html("");
+    //  console.log(data)
+    console.log(parar);
     data.forEach(element => {
-     // console.log(element)
-    //  t.rows.add(element)
+      // console.log(element)
+      //  t.rows.add(element)
       element.forEach(e => {
-      //  console.log(e)
+        //  console.log(e)
         //$("#resultado").append(i +  "-. " + e+"<br/>")
-       // console.log(i)
-        if (i < 50){
-        t.row.add([i, e[0], e[1], e[2], e[3], e[4], e[5]]).draw(true)
-      }
+        // console.log(i)
+        if (i < 50) {
+          t.row.add([i, e[0], e[1], e[2], e[3], e[4], e[5]]).draw(true);
+        }
         i++;
       });
-   
-      console.log("----",i)
+
+      console.log("----", i);
     });
-
-    
-}
-
+  }
 });
