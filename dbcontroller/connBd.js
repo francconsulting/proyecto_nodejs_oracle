@@ -3,6 +3,7 @@
 var oracledb = require("oracledb"),
   dbConfig = require("./dbconfig.js"),
   reloj = require("../commonjs/reloj"),
+  socketMVC = require("socket.mvc"),
   //numRows = 100,
   iRowsAffec = 0,
   arrayData = [],
@@ -122,6 +123,10 @@ ConnBd.getAllRows = (conn, results, numRows) => {
           arrayData.push(rows); //guardar el bloque de registros en el array
           iRowsAffec += rows.length; //filas recuperadas
 
+          socketMVC.emit("rowsRecibidos", {
+            message: " Recibiendo datos ...... recibidos: " + iRowsAffec
+          });
+
           mensaje = " Recibiendo datos ...... recibidos: " + iRowsAffec;
           reloj.setMensaje(mensaje); //definir un nuevo mensaje
           reloj.getMensaje(); //mostrar el mensaje
@@ -131,12 +136,16 @@ ConnBd.getAllRows = (conn, results, numRows) => {
             _getF(conn, results, numRows);
           } else {
             //cuando finaliza la recuperacion de datos
+            socketMVC.emit("rowsRecibidos", {
+              message: "   Registros recuperados:" + iRowsAffec
+            });
+
             console.log("   Registros recuperados:", iRowsAffec);
             ConnBd.closeRs(conn, results); //cerrar el recordset
             ConnBd.close(conn); //cerrar la Bd
             reloj.timeStop();
             resolve({ arrayData: arrayData, iRowsAffec: iRowsAffec }); //devolucion del objeto con los datos y las filas recuperadas
-          }
+          } 
         } else {
           //cuando no hay datos en la consulta
           console.log("<<<< No hay datos para la consulta planteada >>>>");
@@ -172,14 +181,13 @@ ConnBd.getCabecera = (conn, results) => {
 
 ConnBd.getRowsAffec = () => {
   return iRowsAffec;
-}
+};
 ConnBd.setResetRowsAffec = () => {
   iRowsAffec = 0;
-}
+};
 
 ConnBd.getDatos = () => {
   return arrayData;
-}
-
+};
 
 module.exports = ConnBd;

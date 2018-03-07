@@ -19,7 +19,7 @@ $(document).ready(function() {
     $(document).ajaxStart(function(evt, jqxhr, opt) {
       //console.log(evt);
       // $("#error").html("Iniciando...");
-      $("#resultado").html("ajaxStart");
+      // $("#resultado").html("ajaxStart");
     });
 
     /*var intervalId = setInterval(function() {
@@ -45,6 +45,7 @@ $(document).ready(function() {
     }, 500);*/
 
     //t =  dataPrueba()
+    //dataPrueba();
     callAjax("http://localhost:3001/tdcs");
     /*   callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
       .done(function() {
@@ -108,19 +109,23 @@ $(document).ready(function() {
   (function(io) {
     "use strict";
     var io = io();
-    io.on("emit2", function(data) {
+    io.on("mensaje_inicial", function(data) {
       console.log(data);
-      $("#error").html(data.message);
+      $("#info").html(data.message);
 
       // document.getElementById("hello").innerHTML = data.message;
       io.emit("mi_event_desde_cliente", { nombre: "fm", apellidos: "bv" });
     });
+    io.on("rowsRecibidos", function(data) {
+      $("#info").html(data.message);
+    });
+
     io.on("filasAfectadas", function(data) {
       console.log(data.datos);
       console.log(data.datos);
       console.log(data.totalRows);
       // mostrarDatos(data.datos);
-      dataSet(data);
+      // dataSet(data);
 
       // $("#resultado").html(data.datos);
       $("#error").html(data.message);
@@ -133,44 +138,9 @@ $(document).ready(function() {
       dataSet(data);
       //    console.log(data)
       arrDatos = data;
-    });
-  })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
-
-  function crearTabla(cabecera, dataset) {
-    var t = $("#tabla").DataTable({
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
-      processing: true,
-      sLoadingRecords: "Please wait - loading...",
-      deferLoading: 1000,
-      iDisplayLength: 10,
-      aLengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
-      data: dataset,
-      destroy: true,
-      columns: [
-        { title: "c1" },
-        { title: "c2" },
-        { title: "c3" },
-        { title: "c4" }
-      ]
-      //columns: cabecera
-    });
-    t.on("draw.dt", function(data) {
-      console.log();
-      //  $("#error").append( '  -> Redraw took at: '+(new Date().getTime()-startTime)+'mS' );
       $("#btnEnviar").attr("disabled", false);
     });
-    /* t.on('page.dt', function(){
-        console.log(t.page.info())
-        console.log(t.page.info().page +" de "+t.page.info().pages)
-        console.log(tcrearTabla();.data().length +'  '+t.page.info().length)
-        //t.page()
-        console.log(arrDatos)
-      })
-*/
-    return t;
-  }
+  })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
   function dataSet(datos) {
     //console.log(JSON.stringify(datos.datos[0]))
@@ -194,17 +164,54 @@ $(document).ready(function() {
     crearTabla(JSON.stringify(cabecera), aDatos); //Descomentar
   }
 
+  function crearTabla(cabecera, dataset) {
+    var t = $("#tabla").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+      },
+      processing: true,
+      serverSide: true,
+      sLoadingRecords: "Please wait - loading...",
+      deferLoading: 500,
+      iDisplayLength: 10,
+      aLengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
+      data: dataset,
+      destroy: true,
+      columns: [
+        { title: "c1" },
+        { title: "c2" },
+        { title: "c3" },
+        { title: "c4" }
+      ]
+      //columns: cabecera
+    });
+    t.on("draw.dt", function(data) {
+      console.log();
+      //  $("#error").append( '  -> Redraw took at: '+(new Date().getTime()-startTime)+'mS' );
+      $("#btnEnviar").attr("disabled", false);
+    });
+    /* t.on('page.dt', function(){
+        console.log(t.page.info())
+        console.log(t.page.info().page +" de "+t.page.info().pages)
+        console.log(tcrearTabla();.data().length +'  '+t.page.info().length)
+        //t.page()
+        console.log(arrDatos)
+      })x
+*/
+    return t;
+  }
+
   function dataPrueba() {
     t = $("#tabla").DataTable({
       language: {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
       iDisplayLength: 10,
-      LengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
+      LengthMenu: [[10, -1], [10, "Todos"]],
       processing: true,
       serverSide: true,
       deferRender: true,
-      //"deferLoading": 1000,
+      deferLoading: 50,
       sAjaxSource: "http://localhost:3001/tdcs",
       sServerMethod: "POST",
       bJQueryUI: true,

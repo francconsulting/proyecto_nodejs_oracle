@@ -35,7 +35,7 @@ router
     console.log("request: ", !preventReCall);
     let cuenta = 0;
     //if (!preventReCall) {
-  /* preventReCall = AppController.getTdcVivos().then(results => {
+    /* preventReCall = AppController.getTdcVivos().then(results => {
       console.log(JSON.stringify(results))
       res.send(results);
       preventReCall = null;
@@ -43,10 +43,10 @@ router
       //console.log(results);
     });*/
 
-    
-     AppController.getTdcVivos()
-    
-    
+    AppController.getTdcVivos().then(results => {
+      return JSON.stringify(results);
+    });
+
     //res.end()
     //} else {
     //  res.end();

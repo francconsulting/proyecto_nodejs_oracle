@@ -41,7 +41,7 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 1000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
 
   /*
     fs.readFile(
@@ -60,6 +60,7 @@ AppModel.getTdcVivos = callback => {
     name_ws: "tdc"
   };
   var prueba = [];
+  var timeInterval = 50;
 
   ConnBd.open((err, conn) => {
     if (err) {
@@ -69,7 +70,7 @@ AppModel.getTdcVivos = callback => {
     mensaje = "Conectado. Esperando a ejecutar la consulta.....";
     reloj.setMensaje(mensaje);
 
-    socketMVC.emit("emit2", { message: mensaje });
+    socketMVC.emit("mensaje_inicial", { message: mensaje }); //pasar mensaje a scripts.js
 
     //  reloj.timeStart();
     ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
@@ -99,7 +100,7 @@ AppModel.getTdcVivos = callback => {
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp
                 });
               }*/
-            }, 5000);
+            }, timeInterval);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
