@@ -41,9 +41,9 @@ AppModel.getTdcVivos = callback => {
     }
   );
 
-  var paramsSql = { distri: "CZZ", rowlimit: 10000 }; //parametros para la consulta
+  var paramsSql = { distri: "CZZ", rowlimit: 15 }; //parametros para la consulta
 
-  /*
+/*
     fs.readFile(
     "./querys/consulta TDC vivos.sql",
     { encoding: "utf-8" },
@@ -59,8 +59,7 @@ AppModel.getTdcVivos = callback => {
     name_wb: "tdcs_vivos_node.xlsx",
     name_ws: "tdc"
   };
-  var prueba = [];
-  var timeInterval = 50;
+var prueba = [];
 
   ConnBd.open((err, conn) => {
     if (err) {
@@ -70,7 +69,7 @@ AppModel.getTdcVivos = callback => {
     mensaje = "Conectado. Esperando a ejecutar la consulta.....";
     reloj.setMensaje(mensaje);
 
-    socketMVC.emit("mensaje_inicial", { message: mensaje }); //pasar mensaje a scripts.js
+    socketMVC.emit("emit2", { message: mensaje });
 
     //  reloj.timeStart();
     ConnBd.ejecutarSqlPromise(conn, ssql, paramsSql)
@@ -84,7 +83,7 @@ AppModel.getTdcVivos = callback => {
             iRowsAffecTmp = ConnBd.setResetRowsAffec();
             var intervalId = setInterval(function() {
               iRowsAffecTmp = ConnBd.getRowsAffec();
-              /*  if (iRowsAffecTmp<10){
+            /*  if (iRowsAffecTmp<10){
                 socketMVC.emit("filasAfectadas", {
                   message:
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp,
@@ -100,12 +99,14 @@ AppModel.getTdcVivos = callback => {
                     "Registros recuperados hasta ahora.... " + iRowsAffecTmp
                 });
               }*/
-            }, timeInterval);
+                
+              
+              
+            },5000);
             ConnBd.getAllRows(conn, results, numRows)
               .then(data => {
                 arrayData = data.arrayData;
                 iRowsAffec = data.iRowsAffec;
-                console.log(data.iRowsAffec);
               })
               .then(() => {
                 // console.log("fin");
@@ -126,7 +127,7 @@ AppModel.getTdcVivos = callback => {
                   });
                 });*/
                 //return arrayData
-                /*        iRowsAffecTmp = ConnBd.getRowsAffec();
+        /*        iRowsAffecTmp = ConnBd.getRowsAffec();
                 socketMVC.emit("filasAfectadas", {
                   message: "Registros totales recuperados: " + iRowsAffecTmp,
                   datos: AppModel.getDataTmp(),
@@ -134,14 +135,16 @@ AppModel.getTdcVivos = callback => {
                   datos2 : prueba.push(AppModel.getDataTmp())
                 });
                 */
-                socketMVC.emit("dataset", {
+             /*   socketMVC.emit('dataset',{
                   cabecera: arrayHeader,
-                  datos: arrayData,
-                  datos2: prueba.push(AppModel.getDataTmp())
-                });
-                //  clearInterval(intervalId);
-                reloj.timeStop();
-                callback(arrayData);
+                  datos:arrayData,
+                  datos2 : prueba.push(AppModel.getDataTmp())
+                })
+                */
+               
+              //  clearInterval(intervalId);
+              reloj.timeStop();
+             callback(arrayData);
               });
           });
       })
@@ -150,10 +153,12 @@ AppModel.getTdcVivos = callback => {
       });
   });
 };
-AppModel.prueba = () => {
-  console.log(iRowsAffecTmp);
-  return iRowsAffecTmp;
-};
+
+AppModel.getPrueba = () => {
+  return {"data" : [["CZZ",	"40", 	"2927409",  "100401796",  "100401796", "finañ"]]}
+}
+
+
 
 AppModel.getDataTmp = () => {
   return ConnBd.getDatos();

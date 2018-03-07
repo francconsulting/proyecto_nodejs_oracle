@@ -22,80 +22,12 @@ $(document).ready(function() {
       // $("#resultado").html("ajaxStart");
     });
 
-    /*var intervalId = setInterval(function() {
-      callAjax(
-        "http://localhost:3001/prueba",
-        function(data) {
-          //console.log("-----", data);
-          data = JSON.parse(data);
-          //callAjax("http://localhost:3001/tdcs")
-          if (data.registros == "undefined") {
-            data.registros = 0;
-          }
-
-          $("#error").html(
-            "Recibidos hasta ahora.... " + data.registros + " registros."
-          );
-          $("#resultado").html(data.datos);
-        },
-        null,
-        "POST",
-        "HTML"
-      );
-    }, 500);*/
-
-    //t =  dataPrueba()
-    //dataPrueba();
-    callAjax("http://localhost:3001/tdcs");
-    /*   callAjax("http://localhost:3001/tdcs", printTabla, null, "post", "html")
-      .done(function() {
-        //$("#resultado").prepend("Preparando resultados");
-        $("#btnEnviar").attr("disabled", false);
-      })
-      .done(function() {
-        // clearInterval(intervalId);
-        //$("#resultado").append("Desde otro DONE");
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        $("#error")
-          .addClass("error")
-          .text(
-            "Se ha producido un error:" +
-              jqXHR.status +
-              " " +
-              jqXHR.statusText +
-              " -ESTATUS: " +
-              textStatus +
-              "- ERRORTHROWN: " +
-              errorThrown
-          ); //si hay algun error en la llamada muestra un mensaje
-        if (jqXHR.status === 0) {
-          alert("Not connect: Verify Network.");
-        } else if (jqXHR.status == 404) {
-          alert("Requested page not found [404]");
-        } else if (jqXHR.status == 500) {
-          alert("Internal Server Error [500].");
-        } else if (textStatus === "parsererror") {
-          alert("Requested JSON parse failed.");
-        } else if (textStatus === "timeout") {
-          alert("Time out error.");
-        } else if (textStatus === "abort") {
-          alert("Ajax request aborted.");
-        } else {
-          alert("Uncaught Error: " + jqXHR.responseText);
-        }
-      });
-*/
-    /* var promise = doSomething();
-    promise.progress(function(prog) {
-      console.log(prog);
-      $("#resultado").prepend("Desde otro>>>>> DONE>>: ", prog);
-    });*/
+   
+    
+    //callAjax("http://localhost:3001/tdcs");
+    t = tablaServer();
   });
 
-  function printTabla(datos) {
-    $("#resultado").html("ksksksksks");
-  }
 
   $("h1").text("TDC Vivos");
 
@@ -124,7 +56,6 @@ $(document).ready(function() {
       console.log(data.datos);
       console.log(data.datos);
       console.log(data.totalRows);
-      // mostrarDatos(data.datos);
       // dataSet(data);
 
       // $("#resultado").html(data.datos);
@@ -143,7 +74,7 @@ $(document).ready(function() {
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
   function dataSet(datos) {
-    //console.log(JSON.stringify(datos.datos[0]))
+    console.log(JSON.stringify(datos))
 
     var aDatos = [],
       cabecera = [];
@@ -170,7 +101,7 @@ $(document).ready(function() {
         url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
       },
       processing: true,
-      serverSide: true,
+      serverSide: false,
       sLoadingRecords: "Please wait - loading...",
       deferLoading: 500,
       iDisplayLength: 10,
@@ -201,75 +132,25 @@ $(document).ready(function() {
     return t;
   }
 
-  function dataPrueba() {
-    t = $("#tabla").DataTable({
-      language: {
-        url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-      },
-      iDisplayLength: 10,
-      LengthMenu: [[10, -1], [10, "Todos"]],
+  function tablaServer(){
+    $('#tabla').dataTable( {
       processing: true,
       serverSide: true,
-      deferRender: true,
-      deferLoading: 50,
-      sAjaxSource: "http://localhost:3001/tdcs",
-      sServerMethod: "POST",
-      bJQueryUI: true,
-      bPaginate: true,
-      bSort: false,
-      destroy: true,
-      columns: [
-        { title: "c1" },
-        { title: "c2" },
-        { title: "c3" },
-        { title: "c4" }
-      ]
-    });
-    return t;
-
-    t.on("preDraw", function(data) {
-      startTime = new Date().getTime();
-    });
-    on(" page.dt", function() {
-      console.log(t.page.len(2).draw());
-    })
-      .on("draw.dt", function(data) {
-        console.log();
-        $("#error").append(
-          "  -> Redraw took at: " + (new Date().getTime() - startTime) + "mS"
-        );
-        $("#btnEnviar").attr("disabled", false);
-      })
-      .on("preInit.dt", function() {
-        $("#error").append(" Iniciandoooooooooooo");
-      });
+      ajax: {
+        url: "http://localhost:3001/tdcs",
+        type: "POST",
+        dataType: 'json',
+        "columns" : [
+          { title: "c1" },
+          { title: "c2" },
+          { title: "c3" },
+          { title: "c4" }
+        ]
+      },
+      aLengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
+ 
+    } );
   }
 
-  function dataArray() {
-    console.log(arrDatos);
-  }
 
-  function mostrarDatos(data) {
-    t.rows().remove();
-    var i = 1,
-      parar = false;
-    // $("#resultado").html("");
-    //  console.log(data)
-    console.log(parar);
-    data.forEach(element => {
-      // console.log(element)
-      //  t.rows.add(element)
-      element.forEach(e => {
-        //  console.log(e)
-        //$("#resultado").append(i +  "-. " + e+"<br/>")
-        // console.log(i)
-        if (i < 50) {
-          t.row.add([i, e[0], e[1], e[2], e[3], e[4], e[5]]).draw(true);
-        }
-        i++;
-      });
-
-      console.log("----", i);
-    });
-  }
 });

@@ -94,6 +94,7 @@ AppController.getTdcVivos = (req, res, next) => {
   //socketMVC.emit("emit2", { message: "hola caracola, desde sockect.IO#####" });
   let html = "",
     i = 1;
+
   return new Promise((resolve, reject) => {
     AppModel.getTdcVivos(results => {
       resolve(results);
@@ -126,13 +127,10 @@ AppController.getTdcVivosPrueba = () => {
   AppModel.getTdcVivos();
 };
 AppController.prueba = (req, res, next) => {
-  var registros = {
-    registros: AppModel.prueba(),
-    datos: AppModel.getDataTmp()
-  };
+  var registros = AppModel.prueba()
   //registros = AppModel.prueba()
   //registros = JSON.stringify(AppModel.getDataTmp())
-  //console.log (registros)
+  console.log (registros)
   return JSON.stringify(registros);
 };
 /*AppController.getTdcVivos = (req, res, next) => {
@@ -145,6 +143,11 @@ AppController.prueba = (req, res, next) => {
     })
   
 }*/
+AppController.getPrueba = () => {
+  var registros = AppModel.getPrueba();
+
+  return registros
+}
 
 AppController.error404 = (req, res, next) => {
   let error = new Error(),

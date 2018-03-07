@@ -43,10 +43,12 @@ router
       //console.log(results);
     });*/
 
-    AppController.getTdcVivos().then(results => {
-      return JSON.stringify(results);
-    });
-
+    var registros = AppController.getTdcVivos().then( (data) => {
+      console.log(JSON.stringify({"data" : data[0]}))
+      res.send( {"data" : data[0]})
+      //return {"data" : [["CZZ",	"40", 	"2927409",  "100401796",  "100401796", "finañ"]]}
+    }   )
+    
     //res.end()
     //} else {
     //  res.end();
@@ -56,16 +58,13 @@ router
     /*AppController.getTdcVivos();
     res.send("calculando....");*/
   })
-  .post("/prueba2", (req, res) => {
-    AppController.getTdcVivosPrueba();
-    res.end();
+
+  .post("/p", function (req, res){
+     var registros =  AppController.getPrueba();
+     console.log(registros)
+     res.send(registros)
   })
-  .post("/prueba", (req, res) => {
-    //AppController.getTdcVivosPrueba()
-    var registros = AppController.prueba();
-    //console.log(registros);
-    res.end(registros);
-  })
+
   /*
     .get('/', PelisController.getAll)
     .get('/agregar', PelisController.addForm)
