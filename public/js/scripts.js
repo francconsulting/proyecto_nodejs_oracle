@@ -22,12 +22,9 @@ $(document).ready(function() {
       // $("#resultado").html("ajaxStart");
     });
 
-   
-    
     //callAjax("http://localhost:3001/tdcs");
     t = tablaServer();
   });
-
 
   $("h1").text("TDC Vivos");
 
@@ -74,7 +71,7 @@ $(document).ready(function() {
   })(io); //io del parametro => lo lee de dentro de /socket.io/socket.io.js
 
   function dataSet(datos) {
-    console.log(JSON.stringify(datos))
+    console.log(JSON.stringify(datos));
 
     var aDatos = [],
       cabecera = [];
@@ -132,25 +129,23 @@ $(document).ready(function() {
     return t;
   }
 
-  function tablaServer(){
-    $('#tabla').dataTable( {
+  function tablaServer() {
+    $("#tabla").dataTable({
       processing: true,
       serverSide: true,
+      deferRender: true,
       ajax: {
         url: "http://localhost:3001/tdcs",
         type: "POST",
-        dataType: 'json',
-        "columns" : [
+        dataType: "json",
+        columns: [
           { title: "c1" },
           { title: "c2" },
           { title: "c3" },
           { title: "c4" }
         ]
       },
-      aLengthMenu: [[10, 25, -1], [10, 25, "Todos"]],
- 
-    } );
+      aLengthMenu: [[10, -1], [10, "Todos"]]
+    });
   }
-
-
 });

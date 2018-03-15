@@ -43,12 +43,12 @@ router
       //console.log(results);
     });*/
 
-    var registros = AppController.getTdcVivos().then( (data) => {
-      console.log(JSON.stringify({"data" : data[0]}))
-      res.send( {"data" : data[0]})
-      //return {"data" : [["CZZ",	"40", 	"2927409",  "100401796",  "100401796", "finañ"]]}
-    }   )
-    
+    var registros = AppController.getTdcVivos().then(data => {
+      console.log(data[0].length);
+      res.send({ data: data[0], iRows: data[0].length });
+      //res.send {"data" : [["CZZ",	"40", 	"2927409",  "100401796",  "100401796", "finañ"]]}
+    });
+
     //res.end()
     //} else {
     //  res.end();
@@ -59,10 +59,10 @@ router
     res.send("calculando....");*/
   })
 
-  .post("/p", function (req, res){
-     var registros =  AppController.getPrueba();
-     console.log(registros)
-     res.send(registros)
+  .post("/p", function(req, res) {
+    var registros = AppController.getPrueba();
+    console.log(registros);
+    res.send(registros);
   })
 
   /*
