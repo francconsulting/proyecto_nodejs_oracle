@@ -96,6 +96,24 @@ var tdcs = (err, conn) => {
     });
 };
 
+var CronJob = require("cron").CronJob;
+var job1 = new CronJob({
+  //"00 45 07 * * 1-5",  //se ejecuta de lunes
+  cronTime: "00 45 07 * * 1-5", //se ejecuta de lunes
+  onTick: function() {
+    console.log("Ejecutado desde Cron");
+    ConnBd.open(tdcs);
+  },
+  onComplete: function() {
+    console.log("fin");
+  },
+  start: true,
+  timeZone: "Europe/Madrid"
+});
+
+job1.start();
+console.log("job1 corriendo: ", job1.running);
+
 //conectar(tdcs);
 
-ConnBd.open(tdcs);
+//ConnBd.open(tdcs);
