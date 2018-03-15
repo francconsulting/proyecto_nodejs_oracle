@@ -96,6 +96,11 @@ var tdcs = (err, conn) => {
     });
 };
 
+/**
+ * Programar trabajo con npm cron
+ * https://www.npmjs.com/package/cron
+ *
+ */
 var CronJob = require("cron").CronJob;
 var job1 = new CronJob({
   //"00 45 07 * * 1-5",  //se ejecuta de lunes
