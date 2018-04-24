@@ -6,10 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2 start tdcVivosgetRows.js -i 1",
-    "dev":
-      "nodemon tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192"
+    "dev": "nodemon tdcVivosgetRows.js --max_old_space_size=8192 --optimize_for_size --stack_size=8192"
   },
-  "keywords": ["oracle", "nodejs"],
+  "keywords": [
+    "oracle",
+    "nodejs"
+  ],
   "author": "fmbv",
   "license": "MIT",
   "dependencies": {

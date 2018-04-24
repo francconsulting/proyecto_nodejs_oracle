@@ -17,7 +17,7 @@ var //oracledb = require("oracledb"),
   ConnBd = require("./connBd.js"),
   fs = require("fs"),
   ExcelFile = require("./excelFile"),
-  reloj = require("./reloj"),
+  reloj = require("./commonjs/reloj"),
   numRows = 300, //paquete de registros a recibir
   iRowsAffec = 0, //registros recuperados
   arrayHeader = [],
@@ -38,18 +38,20 @@ var paramsSql = null; //parametros para la consulta
 
 var paramsSql = { distri: "CZZ", numrows: 250 }; //parametros para la consulta
 */
-var configExcel = {
-  tipo: "stream",
-  name_wb: "tdcs_vivos_node.xlsx",
-  name_ws: "tdc"
-};
 
 var tdcs = (err, conn) => {
+  
+  let configExcel = {
+    tipo: "stream",
+    name_wb: "tdcs_vivos_node_" + reloj.getDate() + ".xlsx",
+    name_ws: "tdc"
+  };
+
   if (err) {
     console.log("Error en la conexion");
     return;
   }
-  mensaje = "Conectado. Esperando a ejecutar la consulta.....";
+  mensaje = "Conectado. Esperando a ejecutar la consulta TDCs_VIVOS.....";
   reloj.setMensaje(mensaje);
   reloj.timeStart();
 
@@ -105,12 +107,12 @@ var CronJob = require("cron").CronJob;
 var job1 = new CronJob({
   //"00 45 07 * * 1-5",  //se ejecuta de lunes
   cronTime: "00 45 07 * * 1-5", //se ejecuta de lunes
-  onTick: function() {
+  onTick: function () {
     console.log("Ejecutado desde Cron");
     ConnBd.open(tdcs);
   },
-  onComplete: function() {
-    console.log("fin");
+  onComplete: function () {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>> Finalizacion del proceso TDCs_VIVOS");
   },
   start: true,
   timeZone: "Europe/Madrid"

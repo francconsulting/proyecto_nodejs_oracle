@@ -154,7 +154,7 @@ ExcelFile.wsClose = () => {
 
 ExcelFile.wbClose = () => {
   wb.commit().then(() => {
-    console.log("Libro actualizado. Ya lo puede visualizar");
+    console.log("Libro " + options.filename + " actualizado. Ya lo puede visualizar");
   });
 };
 

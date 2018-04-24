@@ -1,0 +1,14 @@
+Instrucciones instalacion oracledb windows
+
+1º.- Abrir la consola como Administrador (debe ser el powerShell)
+2º.- ejecutar las siguientes instrucciones:
+    npm install --global npm
+    npm install --global --production windows-build-tools
+    npm install instantclient (Opcional si ya tiene instalado el instantclient)
+3º.- configurar las variables de entorno:
+    -> añadir a la variable Path la ruta donde está instalado instantclient, en mi caso es => C:\oracle\instantclient_12_2;
+    ->añadir la variable   OCI_INC_DIR =  C:\oracle\instantclient_12_2\sdk\include
+    ->añadir la variable  OCI_LIB_DIR = C:\oracle\instantclient_12_2\sdk\lib\msvc
+
+4º.- Por ultimo, en una nueva consola como administrador (sino no funcionna) instalar el paquete:
+    npm install oracledb

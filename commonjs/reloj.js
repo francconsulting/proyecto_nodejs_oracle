@@ -63,6 +63,26 @@ Reloj.getTime = () => {
   console.log(dtDiff);
 };
 
+/**
+ * obtener la fecha actual
+ * @separador string  con la cadena que separa
+ * @formato string con el tipo de formato a usar 'ISO', 'EUR'(DDMMAAAA)
+ */
+
+Reloj.getDate = (separador = "", formato = "ISO") => {
+  let sFecha,
+    fecha = new Date(),
+    anio = fecha.getFullYear(),
+    mes =
+      fecha.getMonth().length >= 2 ? parseInt(fecha.getMonth())+1 : "0" + (parseInt(fecha.getMonth())+1),
+    dia = fecha.getDate();
+  sFecha =
+    formato == "ISO"
+      ? anio + separador + mes + separador + dia
+      : dia + separador + mes + separador + anio;
+  return sFecha;
+};
+
 Reloj.setMensaje = msg => {
   mensaje = msg;
 };
